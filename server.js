@@ -17,7 +17,7 @@ mongoose.connect(MONGODB_URI, {
   useCreateIndex: true
 })
 
-// routes for api and view
+// routes
 const routes = require('./routes')
 app.use(routes)
 
