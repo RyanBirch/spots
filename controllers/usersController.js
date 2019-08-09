@@ -6,7 +6,8 @@ require('dotenv').config()
 module.exports = {
 
   registerNewUser: async function(req, res) {
-    const { name, email, password } = req.body
+    console.log(req.body)
+    let { name, email, password } = req.body
 
     // validation
     if (!name || !email || !password) res.status(400).json({ msg: 'Please enter all fields' })
@@ -16,7 +17,7 @@ module.exports = {
     if (user) return res.status(400).json({ msg: 'user already exists' })
 
     // create new user
-    const newUser = new User({ name, email, password })
+    let newUser = new User({ name, email, password })
 
     // create salt and hash
     let salt = await bcrypt.genSalt(10)

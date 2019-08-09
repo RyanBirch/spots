@@ -6,7 +6,7 @@ require('dotenv').config()
 module.exports = {
 
   authenticateUser: async function(req, res) {
-    const { email, password } = req.body
+    let { email, password } = req.body
 
     // validation
     if (!email || !password) res.status(400).json({ msg: 'Please enter all fields' })
