@@ -5,6 +5,7 @@ require('dotenv').config()
 
 module.exports = {
 
+  // authenticate user
   authenticateUser: async function(req, res) {
     let { email, password } = req.body
 
@@ -36,6 +37,13 @@ module.exports = {
         })
       }
     )
+  },
+
+  // get user data from database
+  getUserData: function(req, res) {
+    User.findById(req.user.id)
+      .select('-password')
+      .then(user => res.json(user))
   }
 
 }

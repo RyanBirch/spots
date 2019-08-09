@@ -6,7 +6,6 @@ require('dotenv').config()
 module.exports = {
 
   registerNewUser: async function(req, res) {
-    console.log(req.body)
     let { name, email, password } = req.body
 
     // validation

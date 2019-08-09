@@ -1,13 +1,14 @@
 import React from 'react'
 import SignupForm from '../components/SignupForm'
 import API from '../utils/API'
+import Navbar from '../components/Navbar'
 
 class Signup extends React.Component {
 
   state = {
     name: '',
     email: '',
-    password: ''
+    password: '',
   }
 
   handleSubmit = event => {
@@ -15,7 +16,11 @@ class Signup extends React.Component {
 
     let { name, email, password } = this.state
     API.register(name, email, password)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res.data)
+        localStorage['token'] = res.data.token
+        this.forceUpdate()
+      })
   }
 
   handleInputChange = event => {
@@ -26,6 +31,7 @@ class Signup extends React.Component {
   render() {
     return (
       <div>
+        <Navbar />
         <SignupForm 
           name={this.state.name}
           email={this.state.email}

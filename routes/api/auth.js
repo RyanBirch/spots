@@ -5,18 +5,11 @@ const User = require('../../models/User')
 
 // /api/auth
 
-// router.route('/authenticate')
-//   .post(authController.authenticateUser)
-
 // login
 router.post('/authenticate', authController.authenticateUser)
 
-// get user data
-router.get('/user', isAuthenticated, (req, res) => {
-  User.findById(req.user.id)
-    .select('-password')
-    .then(user => res.json(user))
-})
+// get user data 
+router.get('/user', isAuthenticated, authController.getUserData)
 
 
 

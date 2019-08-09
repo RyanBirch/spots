@@ -7,6 +7,8 @@ function SignupForm(props) {
       <h1 className="text-center">Signup</h1>
 
       <form onSubmit={props.handleSubmit}>
+        
+        {/* name */}
         <div className="form-group">
           Name
           <input 
@@ -17,6 +19,8 @@ function SignupForm(props) {
             onChange={props.handleInputChange}
           />
         </div>
+
+        {/* email */}
         <div className="form-group">
           Email address
           <input 
@@ -27,6 +31,8 @@ function SignupForm(props) {
             onChange={props.handleInputChange}
           />
         </div>
+
+        {/* password */}
         <div className="form-group">
           Password
           <input 
@@ -37,7 +43,9 @@ function SignupForm(props) {
             onChange={props.handleInputChange}
           />
         </div>
+
         <button type="submit" className="btn btn-primary">Submit</button>
+
       </form>
 
     </div> 
