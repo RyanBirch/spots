@@ -5,24 +5,22 @@ import { Redirect } from 'react-router-dom'
 class Navbar extends React.Component {
 
   state = {
-    redirect: false
+    redirectToLogin: false,
+    // redirectToHome: false
   }
 
   handleClick = event => {
     if (event.target.textContent === 'Log out') {
       localStorage.removeItem('token')
       this.forceUpdate()
-
-      // *** possibly send them back to the home page *** //
-
     } else {
-      this.setState({ redirect: true })
+      this.setState({ redirectToLogin: true })
     }
   }
 
   render() {
 
-    if (this.state.redirect) return <Redirect to="/login" />
+    if (this.state.redirectToLogin) return <Redirect to="/login" />
 
     return (
       <nav className="navbar navbar-dark bg-dark fixed-top">

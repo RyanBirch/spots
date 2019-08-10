@@ -2,8 +2,8 @@ import React from 'react'
 import SignupForm from '../components/SignupForm'
 import API from '../utils/API'
 import Navbar from '../components/Navbar'
-import { Link } from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import Error from '../components/Error'
 
 class Signup extends React.Component {
 
@@ -11,7 +11,9 @@ class Signup extends React.Component {
     name: '',
     email: '',
     password: '',
-    redirect: false
+    redirect: false,
+    error: false,
+    errorMessage: ''
   }
 
   handleSubmit = event => {
@@ -24,7 +26,10 @@ class Signup extends React.Component {
         localStorage['token'] = res.data.token
         this.setState({ redirect: true })
       })
-      .catch(err => console.log(err.response.data.msg))
+      .catch(err => {
+        console.log(err.response.data.msg)
+        this.setState({ errorMessage: err.response.data.msg})
+      })
   }
 
   handleInputChange = event => {
@@ -39,6 +44,7 @@ class Signup extends React.Component {
     return (
       <div>
         <Navbar />
+        <Error message={this.state.errorMessage} />
         <SignupForm 
           name={this.state.name}
           email={this.state.email}

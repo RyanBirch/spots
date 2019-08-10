@@ -4,13 +4,16 @@ import API from '../utils/API'
 import Navbar from '../components/Navbar'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
+import Error from '../components/Error'
 
 class Login extends React.Component {
 
   state = {
     email: '',
     password: '',
-    redirect: false
+    redirect: false,
+    error: false,
+    errorMessage: ''
   }
 
   handleSubmit = event => {
@@ -23,7 +26,10 @@ class Login extends React.Component {
         localStorage['token'] = res.data.token
         this.setState({ redirect: true })
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        this.setState({ errorMessage: err.response.data.msg})
+      })
   }
 
   handleInputChange = event => {
@@ -38,6 +44,7 @@ class Login extends React.Component {
     return (
       <div>
         <Navbar />
+        <Error message={this.state.errorMessage} />
         <LoginForm 
           email={this.state.email}
           password={this.state.password}

@@ -14,7 +14,7 @@ module.exports = {
 
     // Check for existing user
     let user = await User.findOne({ email })
-    if (!user) return res.status(400).json({ msg: 'user does not exist' })
+    if (!user) return res.status(400).json({ msg: 'User does not exist' })
 
     let isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' })
