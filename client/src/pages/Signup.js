@@ -2,6 +2,8 @@ import React from 'react'
 import SignupForm from '../components/SignupForm'
 import API from '../utils/API'
 import Navbar from '../components/Navbar'
+import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 class Signup extends React.Component {
 
@@ -9,6 +11,7 @@ class Signup extends React.Component {
     name: '',
     email: '',
     password: '',
+    redirect: false
   }
 
   handleSubmit = event => {
@@ -19,8 +22,9 @@ class Signup extends React.Component {
       .then(res => {
         console.log(res.data)
         localStorage['token'] = res.data.token
-        this.forceUpdate()
+        this.setState({ redirect: true })
       })
+      .catch(err => console.log(err.response.data.msg))
   }
 
   handleInputChange = event => {
@@ -29,6 +33,9 @@ class Signup extends React.Component {
   }
 
   render() {
+
+    if (this.state.redirect) return <Redirect to="/" />
+
     return (
       <div>
         <Navbar />
@@ -39,6 +46,8 @@ class Signup extends React.Component {
           handleInputChange={this.handleInputChange}
           handleSubmit={this.handleSubmit} 
         />
+
+        <h3 className="text-center">If you already have an account, you can <Link to="/login">log in</Link></h3>
       </div>
     )
   }
