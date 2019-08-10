@@ -1,1 +1,1 @@
-# mern_auth_jwt
+# project-3

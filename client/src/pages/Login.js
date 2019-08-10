@@ -2,8 +2,7 @@ import React from 'react'
 import LoginForm from '../components/LoginForm'
 import API from '../utils/API'
 import Navbar from '../components/Navbar'
-import { Link } from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Error from '../components/Error'
 
 class Login extends React.Component {

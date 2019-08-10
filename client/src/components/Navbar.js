@@ -6,7 +6,6 @@ class Navbar extends React.Component {
 
   state = {
     redirectToLogin: false,
-    // redirectToHome: false
   }
 
   handleClick = event => {
@@ -25,9 +24,11 @@ class Navbar extends React.Component {
     return (
       <nav className="navbar navbar-dark bg-dark fixed-top">
         <span className="navbar-brand mb-0 h1" style={{ fontSize: "2em", marginLeft: "2em" }}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>App</Link>
+          <Link to="/" style={{ textDecoration: "none", color: "white", fontFamily: "Lobster, cursive", fontSize: "1.25em" }}>
+            <i class="fa fa-coffee" style={{ color: "white" }}></i> Spots
+          </Link>
         </span>
-        <button className="btn btn-light" onClick={this.handleClick}>{localStorage['token'] ? "Log out" : "Log in"}</button>
+        <button className="btn btn-light" style={{ marginRight: '1em' }} onClick={this.handleClick}>{localStorage['token'] ? "Log out" : "Log in"}</button>
       </nav>
     )
   }

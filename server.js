@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') app.use(express.static('client/build'
 
 // database
 const mongoose = require('mongoose')
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/mern_auth_jwt'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/spots'
 mongoose.connect(MONGODB_URI, { 
   useNewUrlParser: true,
   useCreateIndex: true
