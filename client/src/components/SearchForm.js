@@ -8,7 +8,7 @@ function SearchForm(props) {
 
         {/* search term */}
         <div className="form-group">
-          Term
+          Find a spot
           <input 
             type="text" 
             className="form-control" 
