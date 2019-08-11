@@ -15,7 +15,7 @@ router.get('/:term/:location', (req, res) => {
 
   axios.get(url, config)
     .then(response => {
-      res.send(response.data)
+      res.json(response.data)
     })
     .catch(err => console.log(err))
 })

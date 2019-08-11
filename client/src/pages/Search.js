@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import API from '../utils/API'
+import SearchForm from '../components/SearchForm'
 
 class Search extends React.Component {
 
@@ -12,17 +13,32 @@ class Search extends React.Component {
   }
 
   componentDidMount() {
+    // API.search('bar', 'orlando')
+    //   .then(res => console.log(res))
+
     API.search('bar', 'orlando')
-      .then(res => console.log(res))
+  }
+
+  handleInputChange = event => {
+    let { name, value } = event.target
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = event => {
+    event.preventDefault()
+    API.search(this.state.term, this.state.location)
   }
 
   render() {
     return (
       <div>
         <Navbar />
-        <div>
-          <h1 className="text-center">Search Page</h1>
-        </div>
+        <SearchForm 
+          term={this.state.term}
+          location={this.state.location}
+          handleInputChange={this.handleInputChange}
+          handleSubmit={this.handleSubmit}
+        />
       </div>
     )
   }

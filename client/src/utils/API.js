@@ -1,5 +1,4 @@
 import axios from 'axios'
-require('dotenv').config()
 
 export default {
 
@@ -12,6 +11,8 @@ export default {
   },
 
   search: function(term, location) {
-    return axios.get(`/api/search/${term}/${location}`)
+    // return axios.get(`/api/search/${term}/${location}`)
+    axios.get(`/api/search/${term}/${location}`)
+      .then(res => console.log(res.data.businesses))
   }
 }
