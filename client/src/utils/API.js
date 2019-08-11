@@ -10,8 +10,8 @@ export default {
     return axios.post('/api/auth/authenticate', { email, password })
   },
 
-  search: function(term, location) {
-    return axios.get(`/api/search/${term}/${location}`)
+  search: function(term, location, offset) {
+    return axios.get(`/api/search/${term}/${location}/${offset}`)
 
 
     // axios.get(`/api/search/${term}/${location}`)

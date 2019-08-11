@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import API from '../utils/API'
 import SearchForm from '../components/SearchForm'
+import SearchResults from '../components/SearchResults'
 
 class Search extends React.Component {
 
@@ -10,16 +11,17 @@ class Search extends React.Component {
     location: '',
     page: 0,
     offset: 0,
-    results: []
+    results: [], 
+    search: false
   }
 
-  componentDidMount() {
-    API.search('breakfast', 'orlando')
-      .then(res => {
-        console.log(res.data.businesses)
-        this.setState({ results: res.data.businesses })
-      })
-  }
+  // componentDidMount() {
+  //   API.search('breakfast', 'orlando', this.state.offset)
+  //     .then(res => {
+  //       console.log(res.data.businesses)
+  //       this.setState({ results: res.data.businesses })
+  //     })
+  // }
 
   handleInputChange = event => {
     let { name, value } = event.target
@@ -28,11 +30,45 @@ class Search extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    API.search(this.state.term, this.state.location)
-      .then(res => {
-        console.log(res.data.businesses)
-        this.setState({ results: res.data.businesses })
+    this.setState({ page: 0 }, () => {
+      API.search(this.state.term, this.state.location, this.state.offset)
+        .then(res => {
+          console.log(res.data.businesses)
+          this.setState({ 
+            results: res.data.businesses,
+            search: true 
+          })
+        })
+    })
+  }
+
+  changePage = event => {
+    window.scrollTo(0, 0)
+    if (event.target.textContent === 'Next Page') {
+      this.setState({ 
+        page: this.state.page + 1,
+      }, () => {
+        this.setState({ offset: this.state.page * 20 }, () => {
+          API.search(this.state.term, this.state.location, this.state.offset)
+            .then(res => {
+              console.log(res.data.businesses)
+              this.setState({ results: res.data.businesses })
+            })
+        })
       })
+    } else {
+      this.setState({ 
+        page: this.state.page - 1,
+      }, () => {
+        this.setState({ offset: this.state.page * 20 }, () => {
+          API.search(this.state.term, this.state.location, this.state.offset)
+            .then(res => {
+              console.log(res.data.businesses)
+              this.setState({ results: res.data.businesses })
+            })
+        })
+      })
+    }
   }
 
   render() {
@@ -51,32 +87,27 @@ class Search extends React.Component {
             this.state.results.map(spot => {
               return (
                 <div key={spot.id}>
-                  <div className="card mb-3" style={{ maxWidth: "100%" }}>
-                    <div className="row no-gutters">
-                      <div className="col-md-4">
-                        <img src={spot.image_url} className="card-img" alt="..." height="300em" />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">{spot.name}</h5>
-                          <p className="card-text">{spot.location.display_address.join(' ')}</p>
-                          <p className="card-text">{spot.display_phone}</p>
-                          {/* <p className="card-text">{spot.categories.map(cat => cat.title + ' ')}</p> */}
-                          <p className="card-text">{spot.categories[0].title}</p>
-                          <p className="card-text">{spot.price}</p>
-                          <p className="card-text">Rating: {spot.rating} / 5</p>
-                          <p className="card-text">Reviews: {spot.review_count}</p>
-                          <p className="card-text"><a href={spot.url}>{spot.name}</a></p>
-                          {/* <p className="card-text"><small className="text-muted">{spot.url}</small></p> */}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <SearchResults 
+                    image={spot.image_url}
+                    name={spot.name}
+                    location={spot.location.display_address.join(' ')}
+                    phone={spot.display_phone}
+                    cat={spot.categories[0].title}
+                    price={spot.price}
+                    rating={spot.rating}
+                    review_count={spot.review_count}
+                    url={spot.url}
+                  />
                 </div>
               )
             })
           ) : ''
         }
+
+        <div className="text-center">
+          {this.state.page > 0 ? <button className="btn btn-info m-4" onClick={this.changePage}>Prev Page</button> : ''}
+          {this.state.search ? <button className="btn btn-info m-4" onClick={this.changePage}>Next Page</button> : ''}
+        </div>
       </div>
     )
   }

@@ -4,7 +4,7 @@ function SearchForm(props) {
   return (
     <div>
 
-      <form onSubmit={props.handleSubmit}>
+      <form onSubmit={props.handleSubmit} className="mb-3">
 
         {/* search term */}
         <div className="form-group">
@@ -31,7 +31,7 @@ function SearchForm(props) {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary">Go</button>
 
       </form>
 
