@@ -7,11 +7,21 @@ import Search from './pages/Search'
 
 class App extends Component {
 
+  state = {
+    userData: {}
+  }
+
+  getUserData = () => {
+    if (localStorage['token']) {
+      // do something
+    }
+  }
+
   render() {
     return (
       <Router>
         <Switch>
-          <div className="container" style={{ paddingTop: "9em", paddingBottom: "3em" }}>
+          <div className="container" style={{ paddingTop: "6em", paddingBottom: "3em" }}>
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />

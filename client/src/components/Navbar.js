@@ -22,7 +22,7 @@ class Navbar extends React.Component {
     if (this.state.redirectToLogin) return <Redirect to="/login" />
 
     return (
-      <nav className="navbar navbar-dark bg-dark fixed-top">
+      <nav className="navbar navbar-dark bg-dark fixed-top" style={{ lineHeight: '2em' }}>
         <span className="navbar-brand mb-0 h1" style={{ fontSize: "2em", marginLeft: "2em" }}>
           <Link to="/" style={{ textDecoration: "none", color: "white", fontFamily: "Lobster, cursive", fontSize: "1.25em" }}>
             <i className="fa fa-coffee" style={{ color: "white" }}></i> Spots

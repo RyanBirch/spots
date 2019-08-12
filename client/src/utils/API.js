@@ -12,11 +12,9 @@ export default {
 
   search: function(term, location, offset) {
     return axios.get(`/api/search/${term}/${location}/${offset}`)
+  },
 
-
-    // axios.get(`/api/search/${term}/${location}`)
-    //   .then(res => {
-    //     console.log(res.data.businesses)
-    //   })
+  getReviews: function(id) {
+    return axios.get(`/api/search/reviews/${id}`)
   }
 }
