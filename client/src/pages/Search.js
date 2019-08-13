@@ -4,6 +4,7 @@ import API from '../utils/API'
 import SearchForm from '../components/SearchForm'
 import SearchResults from '../components/SearchResults'
 import ReviewsModal from '../components/ReviewsModal'
+import searchHelpers from '../utils/searchHelpers'
 
 class Search extends React.Component {
 
@@ -37,7 +38,7 @@ class Search extends React.Component {
     let { name, value } = event.target
     this.setState({ [name]: value })
   }
-
+  
   // search
   handleSubmit = event => {
     event.preventDefault()
@@ -49,9 +50,33 @@ class Search extends React.Component {
           this.setState({ 
             results: res.data.businesses,
             search: true 
-          }, () => this.getCats())
+          }, () => {
+            this.getCats()
+            // this.initMap()
+            let { latitude, longitude } = this.state.results[0].coordinates
+            searchHelpers.initMap(latitude, longitude)
+          })
         })
     })
+  }
+
+  // initiate google map 
+  initMap = () => {
+    const google = window.google
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: {
+          lat: this.state.results[0].coordinates.latitude,
+          lng: this.state.results[0].coordinates.longitude
+      },
+      mapTypeControl: false,
+      streetViewControl: false
+    })
+  }
+
+  //  show markers on map
+  initMarkers = () => {
+
   }
 
   // next and previous page buttons
@@ -201,7 +226,10 @@ class Search extends React.Component {
             }
           </div>
           <div className="col-lg-5">
-            <p className="text-center" style={{ position: 'sticky', top: '5em' }}>Map will go here</p>
+            {/* <p className="text-center" style={{ position: 'sticky', top: '5em' }}>Map will go here</p> */}
+            <div style={{ position: 'sticky', top: '5em' }}>
+              <div id="map" className="text-center" style={{ position: 'sticky', top: '0em', width: '100%', height: '20em' }}></div>
+            </div>
           </div>
         </div>
 
