@@ -28,9 +28,25 @@ router.get('/reviews', (req, res) => {
 })
 
 // filter search
-router.get('/filter/:term/:location/:offset/:sort_by/:price', (req, res) => {
+router.get('/filterPrice/:term/:location/:offset/:sort_by/:price', (req, res) => {
   let { term, location, offset, sort_by, price } = req.params
   let url = `https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&offset=${offset}&sort_by=${sort_by}&price=${price}`
+  let config = {
+    headers: {
+      Authorization: `Bearer ${process.env.YELP_KEY}`
+    }
+  }
+
+  axios.get(url, config)
+    .then(response => {
+      res.json(response.data)
+    })
+    .catch(err => console.log(err))
+})
+
+router.get('/filterCat/:term/:location/:offset/:sort_by/:category', (req, res) => {
+  let { term, location, offset, sort_by, category } = req.params
+  let url = `https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&offset=${offset}&sort_by=${sort_by}&categories=${category}`
   let config = {
     headers: {
       Authorization: `Bearer ${process.env.YELP_KEY}`

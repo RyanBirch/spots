@@ -22,6 +22,10 @@ export default {
   },
 
   filterPrice: function(term, location, offset, sort_by, price) {
-    return axios.get(`/api/search/filter/${term}/${location}/${offset}/${sort_by}/${price}`)
+    return axios.get(`/api/search/filterPrice/${term}/${location}/${offset}/${sort_by}/${price}`)
+  },
+
+  filterCategory: function(term, location, offset, sort_by, category) {
+    return axios.get(`/api/search/filterCat/${term}/${location}/${offset}/${sort_by}/${category}`)
   }
 }

@@ -20,10 +20,10 @@ function SearchResults(props) {
               <p className="card-text">Rating: {props.rating} / 5</p>
               <p className="card-text">Reviews: {props.review_count}</p>
               <div>
-                <a href={props.url} target="_blank" rel="noopener noreferrer"className="btn btn-outline-primary m-1">More Info</a>
+                <button className="btn btn-outline-primary m-1" style={{ display: 'inline-block' }} onClick={props.reviews}>Reviews</button>
                 <button className="btn btn-outline-success m-1">Get Directions</button>
                 <button className="btn btn-outline-warning m-1">&#9733; Add</button>
-                <button className="btn btn-primary m-2" style={{ display: 'inline-block' }} onClick={props.reviews}>Reviews</button>
+                <a href={props.url} target="_blank" rel="noopener noreferrer" className="ml-1 mt-3 text-dark" style={{ display: 'block' }}>More Info</a>
               </div>
             </div>
           </div>

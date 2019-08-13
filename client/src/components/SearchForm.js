@@ -31,15 +31,20 @@ function SearchForm(props) {
           />
         </div>
 
-        {/* price filter */}
-        <button type="button" className="btn btn-light" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
-        <button type="button" className="btn btn-light" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
-        <button type="button" className="btn btn-light" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
-        <button type="button" className="btn btn-light" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
+        {/* submit */}
+        <button type="submit" className="btn btn-primary" style={{ width: '8em', display: 'block' }}>Go!</button>
 
+        {/* price filter */}
+        <div style={{ marginRight: '1em', marginTop: '1em', display: 'inline-block' }}>
+          <button type="button" className="btn btn-outline-secondary" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
+
+        </div>  
         {/* sort by */}
-        <div className="dropdown">
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
+          <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -51,17 +56,19 @@ function SearchForm(props) {
         </div>
 
         {/* categories */}
-        {/* <div className="dropdown" style={{ display: 'inlineBlock' }}>
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
+          <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Categories
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            
+            {/* <button type="button" className="dropdown-item">Best Match</button> */}
+            {
+              props.cats.map((cat, i) => {
+                return <button key={i} type="button" className="dropdown-item" data-filter="category" data-val={cat} onClick={props.handleFilter}>{cat}</button>
+              })
+            }
           </div>
-        </div> */}
-
-        {/* submit */}
-        <button type="submit" className="btn btn-primary" style={{ width: '8em', display: 'block' }}>Go!</button>
+        </div>
 
       </form>
 

@@ -18,7 +18,8 @@ class Search extends React.Component {
     modal: false,
     price: 0,
     sort_by: 'best_match',
-    categories: ''
+    categories: [],
+    category: ''
   }
 
   // open or close modal
@@ -48,7 +49,7 @@ class Search extends React.Component {
           this.setState({ 
             results: res.data.businesses,
             search: true 
-          })
+          }, () => this.getCats())
         })
     })
   }
@@ -102,6 +103,7 @@ class Search extends React.Component {
     this.setState({ [filter]: val }, () => {
       console.log('price: ' + this.state.price)
       console.log('sort_by: ' + this.state.sort_by)
+      console.log('category: ' + this.state.category)
       
       // search based on new filters 
       if (filter === 'sort_by') {
@@ -114,7 +116,7 @@ class Search extends React.Component {
               search: true 
             })
           })
-      } else {
+      } else if (filter === 'price') {
         let { term, location, offset, sort_by, price } = this.state
         API.filterPrice(term, location, offset, sort_by, price)
           .then(res => {
@@ -124,8 +126,31 @@ class Search extends React.Component {
               search: true 
             })
           })
+      } else {
+        let { term, location, offset, sort_by, category } = this.state
+        console.log(this.state)
+        API.filterCategory(term, location, offset, sort_by, category)
+          .then(res => {
+            console.log(res.data.businesses)
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            })
+          })
       }
     })
+  }
+
+  // get categories for dropdown filter
+  getCats = () => {
+    let cats = []
+    for (let i = 0; i < this.state.results.length; i++) {
+      if (!cats.includes(this.state.results[i].categories[0].title) && cats.length < 7)
+      cats.push(this.state.results[i].categories[0].title)
+    }
+
+    this.setState({ categories: cats }, () => console.log(this.state.categories))
+    console.log(this.state)
   }
 
   render() {
@@ -139,6 +164,7 @@ class Search extends React.Component {
           handleInputChange={this.handleInputChange}
           handleSubmit={this.handleSubmit}
           handleFilter={this.handleFilter}
+          cats={this.state.categories}
         />
 
         <ReviewsModal
