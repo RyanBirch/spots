@@ -15,13 +15,17 @@ class Search extends React.Component {
     results: [], 
     search: false, 
     reviews: [],
-    modal: false
+    modal: false,
+    price: 0,
+    sort_by: 'best_match',
+    categories: ''
   }
 
+  // open or close modal
   toggle = () => this.setState({ modal: !this.state.modal })
 
   componentDidMount() {
-    API.search('breakfast', 'orlando', this.state.offset)
+    API.search('breakfast', 'orlando', 0, 'best_match')
       .then(res => {
         console.log(res.data.businesses)
         this.setState({ results: res.data.businesses })
@@ -37,7 +41,8 @@ class Search extends React.Component {
   handleSubmit = event => {
     event.preventDefault()
     this.setState({ page: 0 }, () => {
-      API.search(this.state.term, this.state.location, this.state.offset)
+      let { term, location, offset, sort_by } = this.state
+      API.search(term, location, offset, sort_by)
         .then(res => {
           console.log(res.data.businesses)
           this.setState({ 
@@ -48,6 +53,7 @@ class Search extends React.Component {
     })
   }
 
+  // next and previous page buttons
   changePage = event => {
     window.scrollTo(0, 0)
     if (event.target.textContent === 'Next Page') {
@@ -56,7 +62,7 @@ class Search extends React.Component {
         page: this.state.page + 1,
       }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
-          API.search(this.state.term, this.state.location, this.state.offset)
+          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
             .then(res => {
               console.log(res.data.businesses)
               this.setState({ results: res.data.businesses })
@@ -69,7 +75,7 @@ class Search extends React.Component {
         page: this.state.page - 1,
       }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
-          API.search(this.state.term, this.state.location, this.state.offset)
+          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
             .then(res => {
               console.log(res.data.businesses)
               this.setState({ results: res.data.businesses })
@@ -83,37 +89,64 @@ class Search extends React.Component {
   handleReviews = url => {
     API.getReviews(url)
       .then(res => {
-        console.log(res.data)
         this.setState({ reviews: res.data }, () => {
-          console.log(this.state)
           this.toggle()
         })
       })
       .catch(err => console.log(err))
+  }
 
-
-    // API.getReviews(id)
-    //   .then(res => {
-    //     console.log(res)
-    //     this.toggle()
-    //   })
+  handleFilter = event => {
+    let filter = event.target.getAttribute('data-filter')
+    let val = event.target.getAttribute('data-val')
+    this.setState({ [filter]: val }, () => {
+      console.log('price: ' + this.state.price)
+      console.log('sort_by: ' + this.state.sort_by)
+      
+      // search based on new filters 
+      if (filter === 'sort_by') {
+        let { term, location, offset, sort_by } = this.state
+        API.search(term, location, offset, sort_by)
+          .then(res => {
+            console.log(res.data.businesses)
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            })
+          })
+      } else {
+        let { term, location, offset, sort_by, price } = this.state
+        API.filterPrice(term, location, offset, sort_by, price)
+          .then(res => {
+            console.log(res.data.businesses)
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            })
+          })
+      }
+    })
   }
 
   render() {
     return (
       <div>
+
         <Navbar />
         <SearchForm 
           term={this.state.term}
           location={this.state.location}
           handleInputChange={this.handleInputChange}
           handleSubmit={this.handleSubmit}
+          handleFilter={this.handleFilter}
         />
 
         <ReviewsModal
           isOpen={this.state.modal}
           toggle={this.toggle}
-          body={this.state.reviews.length ? this.state.reviews.map(review => <p>{review}</p>) : ''}
+          body={
+            this.state.reviews.length ? this.state.reviews.map(review => <p className="mb-5">{review}</p>) : ''
+          }
         />
         
         <div className="row">

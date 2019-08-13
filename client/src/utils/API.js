@@ -10,8 +10,8 @@ export default {
     return axios.post('/api/auth/authenticate', { email, password })
   },
 
-  search: function(term, location, offset) {
-    return axios.get(`/api/search/${term}/${location}/${offset}`)
+  search: function(term, location, offset, sort_by) {
+    return axios.get(`/api/search/${term}/${location}/${offset}/${sort_by}`)
   },
 
   getReviews: function(url) {
@@ -19,11 +19,9 @@ export default {
       url 
     }
     return axios.get(`/api/search/reviews`, { params })
-  }
+  },
 
-  // getReviews: function(url) {
-  //   return axios.post(`/api/search/reviews`, {
-  //     url: url
-  //   })
-  // }
+  filterPrice: function(term, location, offset, sort_by, price) {
+    return axios.get(`/api/search/filter/${term}/${location}/${offset}/${sort_by}/${price}`)
+  }
 }

@@ -31,7 +31,37 @@ function SearchForm(props) {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary" style={{ width: '8em' }}>Go!</button>
+        {/* price filter */}
+        <button type="button" className="btn btn-light" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
+        <button type="button" className="btn btn-light" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
+        <button type="button" className="btn btn-light" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
+        <button type="button" className="btn btn-light" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
+
+        {/* sort by */}
+        <div className="dropdown">
+          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button type="button" className="dropdown-item" data-val="best_match" data-filter="sort_by" onClick={props.handleFilter}>Best Match</button>
+            <button type="button" className="dropdown-item" data-val="rating" data-filter="sort_by" onClick={props.handleFilter}>Rating</button>
+            <button type="button" className="dropdown-item" data-val="review_count" data-filter="sort_by" onClick={props.handleFilter}>Review Count</button>
+            <button type="button" className="dropdown-item" data-val="distance" data-filter="sort_by" onClick={props.handleFilter}>Distance</button>
+          </div>
+        </div>
+
+        {/* categories */}
+        {/* <div className="dropdown" style={{ display: 'inlineBlock' }}>
+          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Categories
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            
+          </div>
+        </div> */}
+
+        {/* submit */}
+        <button type="submit" className="btn btn-primary" style={{ width: '8em', display: 'block' }}>Go!</button>
 
       </form>
 
