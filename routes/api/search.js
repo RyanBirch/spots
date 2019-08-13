@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
+const scrape = require('../../scripts/reviewScrape')
 
 // /api/search
 
@@ -20,23 +21,15 @@ router.get('/:term/:location/:offset', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// get yelp reviews
-router.get('/reviews/:id', (req, res) => {
-  let { id } = req.params 
-  let url = `https://api.yelp.com/v3/businesses/${id}/reviews`
-  let config = {
-    headers: {
-      Authorization: `Bearer: ${process.env.YELP_KEY}`,
-    }
-  }
+// router.post('/reviews', (req, res) => {
+//   let { url } = req.body
+//   console.log('url in route: ' + url)
+//   scrape(url).then(response => res.send(response))
+// })
 
-  axios.get(url, config)
-    .then(response => {
-      res.json(response.data)
-    })
-    .catch(err => {
-      res.json(err)
-    })
+router.get('/reviews', (req, res) => {
+  let { url } = req.query 
+  scrape(url).then(response => res.send(response))
 })
 
 module.exports = router

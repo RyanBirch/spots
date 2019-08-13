@@ -23,7 +23,7 @@ function SearchResults(props) {
                 <a href={props.url} target="_blank" rel="noopener noreferrer"className="btn btn-outline-primary m-1">More Info</a>
                 <button className="btn btn-outline-success m-1">Get Directions</button>
                 <button className="btn btn-outline-warning m-1">&#9733; Add</button>
-                {/* <button className="btn btn-primary m-2" style={{ display: 'inline-block' }} onClick={props.reviews}>Reviews</button> */}
+                <button className="btn btn-primary m-2" style={{ display: 'inline-block' }} onClick={props.reviews}>Reviews</button>
               </div>
             </div>
           </div>

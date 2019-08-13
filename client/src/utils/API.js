@@ -14,7 +14,16 @@ export default {
     return axios.get(`/api/search/${term}/${location}/${offset}`)
   },
 
-  getReviews: function(id) {
-    return axios.get(`/api/search/reviews/${id}`)
+  getReviews: function(url) {
+    let params = { 
+      url 
+    }
+    return axios.get(`/api/search/reviews`, { params })
   }
+
+  // getReviews: function(url) {
+  //   return axios.post(`/api/search/reviews`, {
+  //     url: url
+  //   })
+  // }
 }

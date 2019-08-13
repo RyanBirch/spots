@@ -80,12 +80,23 @@ class Search extends React.Component {
   }
 
   // get yelp reviews
-  handleReviews = id => {
-    API.getReviews(id)
+  handleReviews = url => {
+    API.getReviews(url)
       .then(res => {
-        console.log(res)
-        this.toggle()
+        console.log(res.data)
+        this.setState({ reviews: res.data }, () => {
+          console.log(this.state)
+          this.toggle()
+        })
       })
+      .catch(err => console.log(err))
+
+
+    // API.getReviews(id)
+    //   .then(res => {
+    //     console.log(res)
+    //     this.toggle()
+    //   })
   }
 
   render() {
@@ -102,7 +113,7 @@ class Search extends React.Component {
         <ReviewsModal
           isOpen={this.state.modal}
           toggle={this.toggle}
-          body={this.state.reviews.length ? this.state.reviews : ''}
+          body={this.state.reviews.length ? this.state.reviews.map(review => <p>{review}</p>) : ''}
         />
         
         <div className="row">
@@ -122,7 +133,7 @@ class Search extends React.Component {
                         rating={spot.rating}
                         review_count={spot.review_count}
                         url={spot.url}
-                        reviews={() => this.handleReviews(spot.id)}
+                        reviews={() => this.handleReviews(spot.url)}
                       />
                     </div>
                   )
