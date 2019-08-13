@@ -31,7 +31,7 @@ function SearchForm(props) {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Go</button>
+        <button type="submit" className="btn btn-primary" style={{ width: '8em' }}>Go!</button>
 
       </form>
 
