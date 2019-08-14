@@ -5,7 +5,7 @@ function SearchResults(props) {
     <div>
 
       {/* Result card */}
-      <div className="card mb-3" style={{ maxWidth: "100%" }} id="result" data-id={props.id} onMouseOver={props.handleMouseOver} onMouseOut={props.handleMouseOut}>
+      <div className="card mb-3" style={{ maxWidth: "100%" }} id={props.id} data-id={props.id} onMouseOver={props.handleMouseOver} onMouseOut={props.handleMouseOut}>
         <div className="row no-gutters">
           <div className="col-md-4">
             <img src={props.image} className="card-img" alt="result" style={{ width: "100%", height: "18em", objectFit: 'cover' }} />

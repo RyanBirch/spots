@@ -31,13 +31,13 @@ class Search extends React.Component {
   // open or close directions modal
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
 
-  // componentDidMount() {
-  //   API.search('breakfast', 'orlando', 0, 'best_match')
-  //     .then(res => {
-  //       console.log(res.data.businesses)
-  //       this.setState({ results: res.data.businesses })
-  //     })
-  // }
+  componentDidMount() {
+    API.search('breakfast', 'orlando', 0, 'best_match')
+      .then(res => {
+        console.log(res.data.businesses)
+        this.setState({ results: res.data.businesses })
+      })
+  }
 
   handleInputChange = event => {
     let { name, value } = event.target
@@ -57,10 +57,6 @@ class Search extends React.Component {
             search: true 
           }, () => {
             this.getCats()
-
-            // initiate google map
-            // let { latitude, longitude } = this.state.results[0].coordinates
-            // this.initMap(latitude, longitude)
             this.initMarkers()
           })
         })
@@ -116,6 +112,14 @@ class Search extends React.Component {
 
       marker.addListener('mouseover', () => infowindow.open(map, marker))
       marker.addListener('mouseout', () => infowindow.close(map, marker))
+      marker.addListener('click', () => {
+        let markerID = marker.get('id')
+        document.getElementById(markerID).scrollIntoView({
+          behavior: 'auto',
+          block: 'center',
+          inline: 'center'
+        })
+      })
     })
 
     this.setState({  markers: newMarkers })
@@ -133,7 +137,7 @@ class Search extends React.Component {
           API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
             .then(res => {
               console.log(res.data.businesses)
-              this.setState({ results: res.data.businesses })
+              this.setState({ results: res.data.businesses }, () => this.initMarkers())
             })
         })
       })
@@ -146,7 +150,7 @@ class Search extends React.Component {
           API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
             .then(res => {
               console.log(res.data.businesses)
-              this.setState({ results: res.data.businesses })
+              this.setState({ results: res.data.businesses }, () => this.initMarkers())
             })
         })
       })
@@ -178,7 +182,7 @@ class Search extends React.Component {
             this.setState({ 
               results: res.data.businesses,
               search: true 
-            })
+            }, () => this.initMarkers())
           })
       } else if (filter === 'price') {
         let { term, location, offset, sort_by, price } = this.state
@@ -188,7 +192,7 @@ class Search extends React.Component {
             this.setState({ 
               results: res.data.businesses,
               search: true 
-            })
+            }, () => this.initMarkers())
           })
       } else {
         let { term, location, offset, sort_by, category } = this.state
@@ -199,7 +203,7 @@ class Search extends React.Component {
             this.setState({ 
               results: res.data.businesses,
               search: true 
-            })
+            }, () => this.initMarkers())
           })
       }
     })
@@ -235,6 +239,10 @@ class Search extends React.Component {
     this.toggleDirections()
   }
 
+  initDirectionsMap = () => {
+
+  }
+
   render() {
 
     // if (this.state.results[0]) {
@@ -264,7 +272,20 @@ class Search extends React.Component {
         <DirectionsModal
           isOpen={this.state.directionsModal}
           toggle={this.toggleDirections}
-          body=''
+          // body={<div id="direction-map"></div>}
+          body={
+            <div>
+              <div id="floating-panel">
+                <form>
+                  <strong>Start:</strong>
+                  <input type="text" id="start" />
+                  <button type="button" id="submit" className="btn btn-success">Go</button>
+                </form>
+              </div>
+              <div id="right-panel"></div>
+              <div id="map"></div>
+            </div>
+          }
         />
         
         <div className="row">

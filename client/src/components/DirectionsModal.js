@@ -5,7 +5,7 @@ class DirectionsModal extends React.Component {
   render() {
     return (
       <div>
-        <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
+        <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} className="modal-xl">
           <ModalHeader toggle={this.props.toggle}>Directions</ModalHeader>
           <ModalBody>
             {this.props.body}  
