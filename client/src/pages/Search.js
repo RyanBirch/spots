@@ -19,7 +19,8 @@ class Search extends React.Component {
     price: 0,
     sort_by: 'best_match',
     categories: [],
-    category: ''
+    category: '',
+    markers: []
   }
 
   // open or close modal
@@ -89,14 +90,35 @@ class Search extends React.Component {
       streetViewControl: false
     })
 
+    // add markers
+    let newMarkers = []
     this.state.results.forEach(item => {
       map.setCenter({ lat: item.coordinates.latitude, lng: item.coordinates.longitude })
 
       let marker = new google.maps.Marker({
         map: map,
-        position: map.center
+        position: map.center,
+        id: item.id,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
       })
+
+      // let newMarkers = this.state.markers 
+      newMarkers.push(marker)
+      // this.setState({  markers: newMarkers })
+
+      let infowindow = new google.maps.InfoWindow({
+        content: 
+        `
+          <strong>${item.name}</strong>
+        `,
+        maxWidth: 300
+      })
+
+      marker.addListener('mouseover', () => infowindow.open(map, marker))
+      marker.addListener('mouseout', () => infowindow.close(map, marker))
     })
+
+    this.setState({  markers: newMarkers })
   }
 
   // next and previous page buttons
@@ -195,12 +217,26 @@ class Search extends React.Component {
     console.log(this.state)
   }
 
+  handleMouseOver = id => {
+    const google = window.google
+    this.state.markers.forEach(item => {
+      if (id === item.get('id')) item.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png')
+    })
+  }
+
+  handleMouseOut = id => {
+    const google = window.google
+    this.state.markers.forEach(item => {
+      if (id === item.get('id')) item.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+    })
+  }
+
   render() {
 
-    if (this.state.results[0]) {
-      let { latitude, longitude } = this.state.results[0].coordinates
-      this.initMarkers()
-    }
+    // if (this.state.results[0]) {
+    //   let { latitude, longitude } = this.state.results[0].coordinates
+    //   this.initMarkers()
+    // }
 
     return (
       <div>
@@ -231,6 +267,7 @@ class Search extends React.Component {
                   return (
                     <div key={spot.id}>
                       <SearchResults 
+                        id={spot.id}
                         image={spot.image_url}
                         name={spot.name}
                         location={spot.location.display_address.join(' ')}
@@ -241,6 +278,8 @@ class Search extends React.Component {
                         review_count={spot.review_count}
                         url={spot.url}
                         reviews={() => this.handleReviews(spot.url)}
+                        handleMouseOver={() => this.handleMouseOver(spot.id)}
+                        handleMouseOut={() => this.handleMouseOut(spot.id)}
                       />
                     </div>
                   )
