@@ -4,7 +4,6 @@ import API from '../utils/API'
 import SearchForm from '../components/SearchForm'
 import SearchResults from '../components/SearchResults'
 import ReviewsModal from '../components/ReviewsModal'
-import searchHelpers from '../utils/searchHelpers'
 
 class Search extends React.Component {
 
@@ -52,31 +51,52 @@ class Search extends React.Component {
             search: true 
           }, () => {
             this.getCats()
-            // this.initMap()
-            let { latitude, longitude } = this.state.results[0].coordinates
-            searchHelpers.initMap(latitude, longitude)
+
+            // initiate google map
+            // let { latitude, longitude } = this.state.results[0].coordinates
+            // this.initMap(latitude, longitude)
+            this.initMarkers()
           })
         })
     })
   }
 
-  // initiate google map 
-  initMap = () => {
+  // initialize google map
+  initMap = (latitude, longitude) => {
     const google = window.google
     let map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: {
-          lat: this.state.results[0].coordinates.latitude,
-          lng: this.state.results[0].coordinates.longitude
+          lat: latitude, 
+          lng: longitude, 
       },
       mapTypeControl: false,
       streetViewControl: false
     })
   }
 
-  //  show markers on map
-  initMarkers = () => {
+  // initialize markers on map
+  initMarkers = () =>  {
+    // initiate map
+    const google = window.google
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: {
+          lat: this.state.results[0].coordinates.latitude, 
+          lng: this.state.results[0].coordinates.longitude 
+      },
+      mapTypeControl: false,
+      streetViewControl: false
+    })
 
+    this.state.results.forEach(item => {
+      map.setCenter({ lat: item.coordinates.latitude, lng: item.coordinates.longitude })
+
+      let marker = new google.maps.Marker({
+        map: map,
+        position: map.center
+      })
+    })
   }
 
   // next and previous page buttons
@@ -126,9 +146,6 @@ class Search extends React.Component {
     let filter = event.target.getAttribute('data-filter')
     let val = event.target.getAttribute('data-val')
     this.setState({ [filter]: val }, () => {
-      console.log('price: ' + this.state.price)
-      console.log('sort_by: ' + this.state.sort_by)
-      console.log('category: ' + this.state.category)
       
       // search based on new filters 
       if (filter === 'sort_by') {
@@ -179,6 +196,12 @@ class Search extends React.Component {
   }
 
   render() {
+
+    if (this.state.results[0]) {
+      let { latitude, longitude } = this.state.results[0].coordinates
+      this.initMarkers()
+    }
+
     return (
       <div>
 
@@ -226,9 +249,8 @@ class Search extends React.Component {
             }
           </div>
           <div className="col-lg-5">
-            {/* <p className="text-center" style={{ position: 'sticky', top: '5em' }}>Map will go here</p> */}
             <div style={{ position: 'sticky', top: '5em' }}>
-              <div id="map" className="text-center" style={{ position: 'sticky', top: '0em', width: '100%', height: '20em' }}></div>
+              <div id="map" className="text-center" style={{ width: '100%', height: '20em' }}></div>
             </div>
           </div>
         </div>

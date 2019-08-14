@@ -56,19 +56,18 @@ function SearchForm(props) {
         </div>
 
         {/* categories */}
-        <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
+        {/* <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
           <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Categories
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {/* <button type="button" className="dropdown-item">Best Match</button> */}
             {
               props.cats.map((cat, i) => {
                 return <button key={i} type="button" className="dropdown-item" data-filter="category" data-val={cat} onClick={props.handleFilter}>{cat}</button>
               })
             }
           </div>
-        </div>
+        </div> */}
 
       </form>
 
