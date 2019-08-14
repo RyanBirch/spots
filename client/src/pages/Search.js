@@ -4,6 +4,7 @@ import API from '../utils/API'
 import SearchForm from '../components/SearchForm'
 import SearchResults from '../components/SearchResults'
 import ReviewsModal from '../components/ReviewsModal'
+import DirectionsModal from '../components/DirectionsModal'
 
 class Search extends React.Component {
 
@@ -15,7 +16,8 @@ class Search extends React.Component {
     results: [], 
     search: false, 
     reviews: [],
-    modal: false,
+    reviewsModal: false,
+    directionsModal: false,
     price: 0,
     sort_by: 'best_match',
     categories: [],
@@ -23,16 +25,19 @@ class Search extends React.Component {
     markers: []
   }
 
-  // open or close modal
-  toggle = () => this.setState({ modal: !this.state.modal })
+  // open or close reviews modal
+  toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
 
-  componentDidMount() {
-    API.search('breakfast', 'orlando', 0, 'best_match')
-      .then(res => {
-        console.log(res.data.businesses)
-        this.setState({ results: res.data.businesses })
-      })
-  }
+  // open or close directions modal
+  toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
+
+  // componentDidMount() {
+  //   API.search('breakfast', 'orlando', 0, 'best_match')
+  //     .then(res => {
+  //       console.log(res.data.businesses)
+  //       this.setState({ results: res.data.businesses })
+  //     })
+  // }
 
   handleInputChange = event => {
     let { name, value } = event.target
@@ -102,15 +107,10 @@ class Search extends React.Component {
         icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
       })
 
-      // let newMarkers = this.state.markers 
       newMarkers.push(marker)
-      // this.setState({  markers: newMarkers })
 
       let infowindow = new google.maps.InfoWindow({
-        content: 
-        `
-          <strong>${item.name}</strong>
-        `,
+        content: `<strong>${item.name}</strong>`,
         maxWidth: 300
       })
 
@@ -158,7 +158,7 @@ class Search extends React.Component {
     API.getReviews(url)
       .then(res => {
         this.setState({ reviews: res.data }, () => {
-          this.toggle()
+          this.toggleReviews()
         })
       })
       .catch(err => console.log(err))
@@ -231,6 +231,10 @@ class Search extends React.Component {
     })
   }
 
+  handleDirections = () => {
+    this.toggleDirections()
+  }
+
   render() {
 
     // if (this.state.results[0]) {
@@ -252,11 +256,15 @@ class Search extends React.Component {
         />
 
         <ReviewsModal
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          body={
-            this.state.reviews.length ? this.state.reviews.map(review => <p className="mb-5">{review}</p>) : ''
-          }
+          isOpen={this.state.reviewsModal}
+          toggle={this.toggleReviews}
+          body={this.state.reviews.length ? this.state.reviews.map(review => <p className="mb-5">{review}</p>) : ''}
+        />
+
+        <DirectionsModal
+          isOpen={this.state.directionsModal}
+          toggle={this.toggleDirections}
+          body=''
         />
         
         <div className="row">
@@ -280,6 +288,7 @@ class Search extends React.Component {
                         reviews={() => this.handleReviews(spot.url)}
                         handleMouseOver={() => this.handleMouseOver(spot.id)}
                         handleMouseOut={() => this.handleMouseOut(spot.id)}
+                        handleDirections={this.handleDirections}
                       />
                     </div>
                   )

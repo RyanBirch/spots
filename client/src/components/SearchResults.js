@@ -21,7 +21,7 @@ function SearchResults(props) {
               <p className="card-text">Reviews: {props.review_count}</p>
               <div>
                 <button className="btn btn-outline-primary m-1" style={{ display: 'inline-block' }} onClick={props.reviews}>Reviews</button>
-                <button className="btn btn-outline-success m-1">Get Directions</button>
+                <button className="btn btn-outline-success m-1" onClick={props.handleDirections}>Get Directions</button>
                 <button className="btn btn-outline-warning m-1">&#9733; Add</button>
                 <a href={props.url} target="_blank" rel="noopener noreferrer" className="ml-1 mt-3 text-dark" style={{ display: 'block' }}>More Info</a>
               </div>
