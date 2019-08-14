@@ -22,7 +22,8 @@ class Search extends React.Component {
     sort_by: 'best_match',
     categories: [],
     category: '',
-    markers: []
+    markers: [],
+    end: ''
   }
 
   // open or close reviews modal
@@ -235,7 +236,11 @@ class Search extends React.Component {
     })
   }
 
-  handleDirections = () => {
+  handleDirections = location => {
+    // this.setState({ end: location }, () => this.toggleDirections())
+    sessionStorage['end'] = location 
+    sessionStorage['latitude'] = location.latitude
+    sessionStorage['longitude'] = location.longitude
     this.toggleDirections()
   }
 
@@ -245,7 +250,7 @@ class Search extends React.Component {
     var directionsService = new google.maps.DirectionsService;
     var map = new google.maps.Map(document.getElementById('directions-map'), {
       zoom: 7,
-      center: {lat: 41.85, lng: -87.65}
+      center: { lat: 41.85, lng: -87.65 }
     });
     directionsDisplay.setMap(map);
     directionsDisplay.setPanel(document.getElementById('right-panel'));
@@ -257,7 +262,7 @@ class Search extends React.Component {
     var onChangeHandler = function() {
       // this.calculateAndDisplayRoute(directionsService, directionsDisplay);
       var start = document.getElementById('start').value;
-      var end = 'disney world'
+      var end = sessionStorage['end']
       directionsService.route({
         origin: start,
         destination: end,
@@ -326,7 +331,7 @@ class Search extends React.Component {
                         reviews={() => this.handleReviews(spot.url)}
                         handleMouseOver={() => this.handleMouseOver(spot.id)}
                         handleMouseOut={() => this.handleMouseOut(spot.id)}
-                        handleDirections={this.handleDirections}
+                        handleDirections={() => this.handleDirections(spot.location.display_address.join(' '), spot.coordinates)}
                       />
                     </div>
                   )
