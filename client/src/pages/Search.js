@@ -240,7 +240,37 @@ class Search extends React.Component {
   }
 
   initDirectionsMap = () => {
+    const google = window.google
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    var map = new google.maps.Map(document.getElementById('directions-map'), {
+      zoom: 7,
+      center: {lat: 41.85, lng: -87.65}
+    });
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('right-panel'));
 
+    var control = document.getElementById('floating-panel');
+    control.style.display = 'block';
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+    var onChangeHandler = function() {
+      // this.calculateAndDisplayRoute(directionsService, directionsDisplay);
+      var start = document.getElementById('start').value;
+      var end = 'disney world'
+      directionsService.route({
+        origin: start,
+        destination: end,
+        travelMode: 'DRIVING'
+      }, function(response, status) {
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+    };
+    document.getElementById('submit').addEventListener('click', onChangeHandler);
   }
 
   render() {
@@ -272,20 +302,7 @@ class Search extends React.Component {
         <DirectionsModal
           isOpen={this.state.directionsModal}
           toggle={this.toggleDirections}
-          // body={<div id="direction-map"></div>}
-          body={
-            <div>
-              <div id="floating-panel">
-                <form>
-                  <strong>Start:</strong>
-                  <input type="text" id="start" />
-                  <button type="button" id="submit" className="btn btn-success">Go</button>
-                </form>
-              </div>
-              <div id="right-panel"></div>
-              <div id="map"></div>
-            </div>
-          }
+          initMap={this.initDirectionsMap}
         />
         
         <div className="row">

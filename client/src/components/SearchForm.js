@@ -34,14 +34,6 @@ function SearchForm(props) {
         {/* submit */}
         <button type="submit" className="btn btn-primary" style={{ width: '8em', display: 'block' }}>Go!</button>
 
-        {/* price filter */}
-        <div style={{ marginRight: '1em', marginTop: '1em', display: 'inline-block' }}>
-          <button type="button" className="btn btn-outline-secondary" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
-
-        </div>  
         {/* sort by */}
         <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
           <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,6 +46,16 @@ function SearchForm(props) {
             <button type="button" className="dropdown-item" data-val="distance" data-filter="sort_by" onClick={props.handleFilter}>Distance</button>
           </div>
         </div>
+
+        {/* price filter */}
+        <div style={{ marginRight: '1em', marginTop: '1em', display: 'inline-block' }}>
+          <button type="button" className="btn btn-outline-secondary" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
+          <button type="button" className="btn btn-outline-secondary" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
+
+        </div>  
+
 
         {/* categories */}
         {/* <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
