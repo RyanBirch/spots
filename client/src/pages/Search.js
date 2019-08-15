@@ -20,10 +20,7 @@ class Search extends React.Component {
     directionsModal: false,
     price: 0,
     sort_by: 'best_match',
-    categories: [],
-    category: '',
     markers: [],
-    end: ''
   }
 
   // open or close reviews modal
@@ -31,14 +28,6 @@ class Search extends React.Component {
 
   // open or close directions modal
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
-
-  componentDidMount() {
-    API.search('breakfast', 'orlando', 0, 'best_match')
-      .then(res => {
-        console.log(res.data.businesses)
-        this.setState({ results: res.data.businesses })
-      })
-  }
 
   handleInputChange = event => {
     let { name, value } = event.target
@@ -57,24 +46,9 @@ class Search extends React.Component {
             results: res.data.businesses,
             search: true 
           }, () => {
-            this.getCats()
             this.initMarkers()
           })
         })
-    })
-  }
-
-  // initialize google map
-  initMap = (latitude, longitude) => {
-    const google = window.google
-    let map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: {
-          lat: latitude, 
-          lng: longitude, 
-      },
-      mapTypeControl: false,
-      streetViewControl: false
     })
   }
 
@@ -85,8 +59,8 @@ class Search extends React.Component {
     let map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: {
-          lat: this.state.results[0].coordinates.latitude, 
-          lng: this.state.results[0].coordinates.longitude 
+        lat: this.state.results[0].coordinates.latitude, 
+        lng: this.state.results[0].coordinates.longitude 
       },
       mapTypeControl: false,
       streetViewControl: false
@@ -195,31 +169,8 @@ class Search extends React.Component {
               search: true 
             }, () => this.initMarkers())
           })
-      } else {
-        let { term, location, offset, sort_by, category } = this.state
-        console.log(this.state)
-        API.filterCategory(term, location, offset, sort_by, category)
-          .then(res => {
-            console.log(res.data.businesses)
-            this.setState({ 
-              results: res.data.businesses,
-              search: true 
-            }, () => this.initMarkers())
-          })
       }
     })
-  }
-
-  // get categories for dropdown filter
-  getCats = () => {
-    let cats = []
-    for (let i = 0; i < this.state.results.length; i++) {
-      if (!cats.includes(this.state.results[i].categories[0].title) && cats.length < 7)
-      cats.push(this.state.results[i].categories[0].title)
-    }
-
-    this.setState({ categories: cats }, () => console.log(this.state.categories))
-    console.log(this.state)
   }
 
   handleMouseOver = id => {
@@ -236,55 +187,49 @@ class Search extends React.Component {
     })
   }
 
-  handleDirections = location => {
-    // this.setState({ end: location }, () => this.toggleDirections())
+  handleDirections = (location, coordinates) => {
     sessionStorage['end'] = location 
-    sessionStorage['latitude'] = location.latitude
-    sessionStorage['longitude'] = location.longitude
+    sessionStorage['latitude'] = coordinates.latitude
+    sessionStorage['longitude'] = coordinates.longitude
     this.toggleDirections()
   }
 
   initDirectionsMap = () => {
     const google = window.google
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    var directionsService = new google.maps.DirectionsService;
-    var map = new google.maps.Map(document.getElementById('directions-map'), {
-      zoom: 7,
-      center: { lat: 41.85, lng: -87.65 }
-    });
-    directionsDisplay.setMap(map);
-    directionsDisplay.setPanel(document.getElementById('right-panel'));
+    let directionsDisplay = new google.maps.DirectionsRenderer
+    let directionsService = new google.maps.DirectionsService
+    let map = new google.maps.Map(document.getElementById('directions-map'), {
+      zoom: 10,
+      center: { lat: this.state.results[0].coordinates.latitude, lng: this.state.results[0].coordinates.longitude },
+      mapTypeControl: false,
+      streetViewControl: false
+    })
+    directionsDisplay.setMap(map)
+    directionsDisplay.setPanel(document.getElementById('right-panel'))
 
-    var control = document.getElementById('floating-panel');
-    control.style.display = 'block';
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+    let control = document.getElementById('floating-panel')
+    control.style.display = 'block'
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control)
 
-    var onChangeHandler = function() {
-      // this.calculateAndDisplayRoute(directionsService, directionsDisplay);
-      var start = document.getElementById('start').value;
-      var end = sessionStorage['end']
+    let onChangeHandler = function() {
+      let start = document.getElementById('start').value
+      let end = sessionStorage['end']
       directionsService.route({
         origin: start,
         destination: end,
         travelMode: 'DRIVING'
       }, function(response, status) {
         if (status === 'OK') {
-          directionsDisplay.setDirections(response);
+          directionsDisplay.setDirections(response)
         } else {
-          window.alert('Directions request failed due to ' + status);
+          window.alert('Directions request failed due to ' + status)
         }
-      });
-    };
-    document.getElementById('submit').addEventListener('click', onChangeHandler);
+      })
+    }
+    document.getElementById('submit').addEventListener('click', onChangeHandler)
   }
 
   render() {
-
-    // if (this.state.results[0]) {
-    //   let { latitude, longitude } = this.state.results[0].coordinates
-    //   this.initMarkers()
-    // }
-
     return (
       <div>
 

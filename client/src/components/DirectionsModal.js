@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import '../styles/style.css'
 
 class DirectionsModal extends React.Component {
   render() {
@@ -12,40 +11,26 @@ class DirectionsModal extends React.Component {
 
             <div>
 
-                  <div id="floating-panel">
-                    <form>
-                      <strong>Start:</strong>
-                      <input type="text" id="start" />
-                      <button type="button" id="submit" className="btn btn-success">Go</button>
-                    </form>
-                  </div>
+              <div id="floating-panel">
+                <form>
+                  <strong>Start:</strong>
+                  <input type="text" id="start" />
+                  <button type="button" id="submit" className="btn btn-success">Go</button>
+                </form>
+              </div>
 
               <div className="row">
-
-
-                <div className="col-5">
+                <div className="col-lg-5 col-md-12">
                   <div id="right-panel"></div>
                 </div>
-
-                <div className="col-7">
-                  <div style={{ position: 'sticky', top: 0 }}>
-                    <div id="directions-map" style={{ width: '100%', height: '20em' }}></div>
+                <div className="col-lg-7 col-md-12">
+                  <div style={{ position: 'sticky', top: '2em' }}>
+                    <div id="directions-map" style={{ width: '100%', height: '25em' }}></div>
                   </div>
                 </div>
-
               </div>
 
             </div>
-
-            {/* <div id="floating-panel">
-              <form>
-                <strong>Start:</strong>
-                <input type="text" id="start" />
-                <button type="button" id="submit">Go</button>
-              </form>
-            </div>
-            <div id="right-panel"></div>
-            <div id="map"></div> */}
 
           </ModalBody>
           <ModalFooter>
