@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const ListSchema = require('./List')
 
 const UserSchema = new Schema({
   name: {
@@ -19,7 +20,8 @@ const UserSchema = new Schema({
   register_date: {
     type: Date,
     default: Date.now
-  }
+  },
+  list: ListSchema
 })
 
 module.exports = User = mongoose.model('user', UserSchema)
