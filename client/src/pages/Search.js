@@ -255,11 +255,19 @@ class Search extends React.Component {
     else this.toggleLoginPrompt()
   }
 
-  // handleFav = () => localStorage['token'] ? this.toggleFav() : this.toggleLoginPrompt()
-
   pushFav = () => {
-    console.log(this.state)
-    let spot = this.state.spot
+    let fav = this.state.fav
+    let favToAdd = {
+      name: fav.name,
+      image: fav.image_url,
+      address: fav.location.display_address.join(' '),
+      phone: fav.phone,
+      category: fav.categories[0].title,
+      price: fav.price,
+      rating: fav.rating,
+      reviewCount: fav.review_count
+    }
+    API.addToList(favToAdd)
   }
 
   render() {

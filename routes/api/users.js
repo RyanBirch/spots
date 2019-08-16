@@ -10,8 +10,8 @@ router.post('/register', usersController.registerNewUser)
 
 // add to a user's favorites list
 router.post('/list/add', isAuthenticated, (req, res) => {
-  /// console.log(req.user.id)
-  res.send(req.user.id)
+  console.log(req.user.id)
+  console.log(req.body)
 })
 
 module.exports = router

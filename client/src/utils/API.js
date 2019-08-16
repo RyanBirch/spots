@@ -26,12 +26,13 @@ export default {
   },
 
   addToList: function(spot) {
+    // ********** need to add the spot somewhere ********** //
     let url = '/api/users/list/add'
     let config = {
       headers: {
         'x-auth-token': localStorage['token']
       }
     }
-    return axios.get(url, config)
+    return axios.post(url, spot, config)
   }
 }
