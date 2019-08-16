@@ -23,5 +23,15 @@ export default {
 
   filterPrice: function(term, location, offset, sort_by, price) {
     return axios.get(`/api/search/filterPrice/${term}/${location}/${offset}/${sort_by}/${price}`)
+  },
+
+  addToList: function(spot) {
+    let url = '/api/users/list/add'
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.get(url, config)
   }
 }

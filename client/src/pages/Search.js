@@ -25,10 +25,12 @@ class Search extends React.Component {
     price: 0,
     sort_by: 'best_match',
     markers: [],
+    fav: ''
   }
 
   // open or close reviews modal
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
+
 
   // open or close directions modal
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
@@ -247,10 +249,17 @@ class Search extends React.Component {
   }
 
   handleFav = spot => {
-    if (localStorage['token']) this.toggleFav()
-    else {
-      this.toggleLoginPrompt()
+    if (localStorage['token']) {
+      this.setState({ fav: spot }, () => this.toggleFav())
     }
+    else this.toggleLoginPrompt()
+  }
+
+  // handleFav = () => localStorage['token'] ? this.toggleFav() : this.toggleLoginPrompt()
+
+  pushFav = () => {
+    console.log(this.state)
+    let spot = this.state.spot
   }
 
   render() {
@@ -282,6 +291,7 @@ class Search extends React.Component {
         <FavModal 
           isOpen={this.state.favModal}
           toggle={this.toggleFav}
+          pushFav={this.pushFav}
         />
 
         <PromptLogin
@@ -290,6 +300,7 @@ class Search extends React.Component {
         />
         
         <div className="row">
+          {/* search results */}
           <div className="col-lg-7">
             {
               this.state.results.length ? (
@@ -319,6 +330,7 @@ class Search extends React.Component {
               ) : ''
             }
           </div>
+          {/* google map */}
           <div className="col-lg-5">
             <div style={{ position: 'sticky', top: '5em' }}>
               <div id="map" className="text-center" style={{ width: '100%', height: '20em' }}></div>
