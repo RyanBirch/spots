@@ -23,7 +23,19 @@ User.create({
         price: '$$',
         rating: '4.5/5',
         reviewCount: 500
+      },
+      {
+        name: 'The bar',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
       }
     ]
   }
 })
+.then(user => console.log(user))
+.catch(err => console.log(err))

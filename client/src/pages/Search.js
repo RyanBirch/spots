@@ -5,6 +5,8 @@ import SearchForm from '../components/SearchForm'
 import SearchResults from '../components/SearchResults'
 import ReviewsModal from '../components/ReviewsModal'
 import DirectionsModal from '../components/DirectionsModal'
+import FavModal from '../components/FavModal'
+import PromptLogin from '../components/PromptLogin'
 
 class Search extends React.Component {
 
@@ -18,6 +20,8 @@ class Search extends React.Component {
     reviews: [],
     reviewsModal: false,
     directionsModal: false,
+    favModal: false,
+    promptLogin: false,
     price: 0,
     sort_by: 'best_match',
     markers: [],
@@ -28,6 +32,19 @@ class Search extends React.Component {
 
   // open or close directions modal
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
+
+  // open or close favorites modal
+  toggleFav = () => this.setState({ favModal: !this.state.favModal })
+
+  // open or close login prompt modal
+  toggleLoginPrompt = () => this.setState({ promptLogin: !this.state.promptLogin })
+
+  componentDidMount() {
+    API.search('bar', 'orlando', 0, 'best_match').then(res => {
+      console.log(res.data.businesses)
+      this.setState({ results: res.data.businesses }, () => this.initMarkers())
+    })
+  }
 
   handleInputChange = event => {
     let { name, value } = event.target
@@ -229,6 +246,13 @@ class Search extends React.Component {
     document.getElementById('submit').addEventListener('click', onChangeHandler)
   }
 
+  handleFav = spot => {
+    if (localStorage['token']) this.toggleFav()
+    else {
+      this.toggleLoginPrompt()
+    }
+  }
+
   render() {
     return (
       <div>
@@ -254,6 +278,16 @@ class Search extends React.Component {
           toggle={this.toggleDirections}
           initMap={this.initDirectionsMap}
         />
+
+        <FavModal 
+          isOpen={this.state.favModal}
+          toggle={this.toggleFav}
+        />
+
+        <PromptLogin
+          isOpen={this.state.promptLogin}
+          toggle={this.toggleLoginPrompt} 
+        />
         
         <div className="row">
           <div className="col-lg-7">
@@ -277,6 +311,7 @@ class Search extends React.Component {
                         handleMouseOver={() => this.handleMouseOver(spot.id)}
                         handleMouseOut={() => this.handleMouseOut(spot.id)}
                         handleDirections={() => this.handleDirections(spot.location.display_address.join(' '), spot.coordinates)}
+                        handleFav={() => this.handleFav(spot)}
                       />
                     </div>
                   )
