@@ -18,4 +18,15 @@ router.get('/list/get', isAuthenticated, (req, res) => {
     .catch(err => res.send(err))
 })
 
+// delete location from favorites list
+router.delete('/list/delete/:spotID', isAuthenticated, (req, res) => {
+  let spotID = req.params.spotID
+  User.findOne({ _id: req.user.id }, (err, user) => {
+    user.list.locations.pull({ _id: spotID })
+    user.save()
+  })
+  .then(() => res.sendStatus(200))
+  .catch(err => res.send(err))
+})
+
 module.exports = router

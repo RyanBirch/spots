@@ -40,8 +40,12 @@ class Profile extends React.Component {
     this.toggleDirections()
   }
 
-  handleDelete = () => {
-    
+  handleDelete = spotID => {
+    API.deleteFav(spotID).then(() => {
+      API.getFavs().then(res => {
+        this.setState({ favs: res.data })
+      })
+    })
   }
 
   render() {

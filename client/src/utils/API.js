@@ -43,5 +43,15 @@ export default {
       }
     }
     return axios.get(url, config)
+  },
+
+  deleteFav: function(spotID) {
+    let url = `/api/users/list/delete/${spotID}`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.delete(url, config)
   }
 }
