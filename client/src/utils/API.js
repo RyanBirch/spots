@@ -33,5 +33,15 @@ export default {
       }
     }
     return axios.post(url, spot, config)
+  },
+
+  getFavs: function() {
+    let url = '/api/users/list/get'
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.get(url, config)
   }
 }

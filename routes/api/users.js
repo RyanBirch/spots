@@ -9,12 +9,13 @@ const User = require('../../models/User')
 router.post('/register', usersController.registerNewUser)
 
 // add to a user's favorites list
-router.post('/list/add', isAuthenticated, (req, res) => {
-  User.findOneAndUpdate({ _id: req.user.id }, {
-    $push: { 'list.locations': req.body }, 
-  }, { new: true })
-  .then(() => res.send(200).json({ msg: 'Insert successful' }))
-  .catch(err => res.send(err))
+router.post('/list/add', isAuthenticated, usersController.addToFav)
+
+// get user's favorites
+router.get('/list/get', isAuthenticated, (req, res) => {
+  User.findOne({ _id: req.user.id })
+    .then(user => res.send(user.list.locations))
+    .catch(err => res.send(err))
 })
 
 module.exports = router

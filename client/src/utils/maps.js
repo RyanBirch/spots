@@ -3,8 +3,8 @@ export default {
   // show map for directions
   initDirectionsMap: function(results) {
     const google = window.google
-    let directionsDisplay = new google.maps.DirectionsRenderer
-    let directionsService = new google.maps.DirectionsService
+    let directionsDisplay = new google.maps.DirectionsRenderer()
+    let directionsService = new google.maps.DirectionsService()
     let map = new google.maps.Map(document.getElementById('directions-map'), {
       zoom: 10,
       center: { lat: results.coordinates.latitude, lng: results.coordinates.longitude },

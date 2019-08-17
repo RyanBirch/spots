@@ -139,7 +139,6 @@ class Search extends React.Component {
 
   // highlight map markers on hover
   handleMouseOver = id => {
-    const google = window.google
     this.state.markers.forEach(item => {
       if (id === item.get('id')) item.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png')
     })
@@ -147,7 +146,6 @@ class Search extends React.Component {
 
   // markers go back to original color when you hover off them
   handleMouseOut = id => {
-    const google = window.google
     this.state.markers.forEach(item => {
       if (id === item.get('id')) item.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
     })

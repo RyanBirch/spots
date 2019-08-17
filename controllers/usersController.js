@@ -50,7 +50,11 @@ module.exports = {
 
   // add a location to a user's favorites list
   addToFav: function(req, res) {
-
+    User.findOneAndUpdate({ _id: req.user.id }, {
+      $push: { 'list.locations': req.body }, 
+    }, { new: true })
+    .then(() => res.sendStatus(200))
+    .catch(err => res.send(err))
   }
 
 }
