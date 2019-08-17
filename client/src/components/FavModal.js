@@ -10,8 +10,8 @@ class FavModal extends React.Component {
           <ModalBody>
             <div className="form-check">
               <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-              <label className="form-check-label" htmlFor="defaultCheck1">
-                Favorites
+              <label className="form-check-label" htmlFor="defaultCheck1" style={{ cursor: 'pointer' }}>
+                <h5>Favorites</h5>
               </label>
             </div>
           </ModalBody>

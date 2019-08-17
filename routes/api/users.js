@@ -10,8 +10,11 @@ router.post('/register', usersController.registerNewUser)
 
 // add to a user's favorites list
 router.post('/list/add', isAuthenticated, (req, res) => {
-  console.log(req.user.id)
-  console.log(req.body)
+  User.findOneAndUpdate({ _id: req.user.id }, {
+    $push: { 'list.locations': req.body }, 
+  }, { new: true })
+  .then(() => res.send(200).json({ msg: 'Insert successful' }))
+  .catch(err => res.send(err))
 })
 
 module.exports = router

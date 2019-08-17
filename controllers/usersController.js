@@ -5,6 +5,7 @@ require('dotenv').config()
 
 module.exports = {
 
+  // register a new user
   registerNewUser: async function(req, res) {
     let { name, email, password } = req.body
 
@@ -44,6 +45,11 @@ module.exports = {
         })
       }
     )
+  },
+
+
+  // add a location to a user's favorites list
+  addToFav: function(req, res) {
 
   }
 

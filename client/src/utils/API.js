@@ -26,7 +26,6 @@ export default {
   },
 
   addToList: function(spot) {
-    // ********** need to add the spot somewhere ********** //
     let url = '/api/users/list/add'
     let config = {
       headers: {

@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 function ReviewsModal(props) {
   return (
     <div>
-      <Modal isOpen={props.isOpen} toggle={props.toggle}>
+      <Modal isOpen={props.isOpen} toggle={props.toggle} className="modal-lg">
         <ModalHeader toggle={props.toggle}>Reviews</ModalHeader>
         <ModalBody>
           {props.body}  

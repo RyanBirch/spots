@@ -7,6 +7,7 @@ import ReviewsModal from '../components/ReviewsModal'
 import DirectionsModal from '../components/DirectionsModal'
 import FavModal from '../components/FavModal'
 import PromptLogin from '../components/PromptLogin'
+import maps from '../utils/maps'
 
 class Search extends React.Component {
 
@@ -28,26 +29,22 @@ class Search extends React.Component {
     fav: ''
   }
 
-  // open or close reviews modal
+  // open or close modals
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
-
-
-  // open or close directions modal
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
-
-  // open or close favorites modal
   toggleFav = () => this.setState({ favModal: !this.state.favModal })
-
-  // open or close login prompt modal
   toggleLoginPrompt = () => this.setState({ promptLogin: !this.state.promptLogin })
 
   componentDidMount() {
     API.search('bar', 'orlando', 0, 'best_match').then(res => {
-      console.log(res.data.businesses)
-      this.setState({ results: res.data.businesses }, () => this.initMarkers())
+      this.setState({ results: res.data.businesses }, () => {
+        let newMarkers = maps.initMarkers(this.state.results)
+        this.setState({ markers: newMarkers })
+      })
     })
   }
 
+  // get form input
   handleInputChange = event => {
     let { name, value } = event.target
     this.setState({ [name]: value })
@@ -58,65 +55,16 @@ class Search extends React.Component {
     event.preventDefault()
     this.setState({ page: 0 }, () => {
       let { term, location, offset, sort_by } = this.state
-      API.search(term, location, offset, sort_by)
-        .then(res => {
-          console.log(res.data.businesses)
-          this.setState({ 
-            results: res.data.businesses,
-            search: true 
-          }, () => {
-            this.initMarkers()
-          })
-        })
-    })
-  }
-
-  // initialize markers on map
-  initMarkers = () =>  {
-    // initiate map
-    const google = window.google
-    let map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: {
-        lat: this.state.results[0].coordinates.latitude, 
-        lng: this.state.results[0].coordinates.longitude 
-      },
-      mapTypeControl: false,
-      streetViewControl: false
-    })
-
-    // add markers
-    let newMarkers = []
-    this.state.results.forEach(item => {
-      map.setCenter({ lat: item.coordinates.latitude, lng: item.coordinates.longitude })
-
-      let marker = new google.maps.Marker({
-        map: map,
-        position: map.center,
-        id: item.id,
-        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-      })
-
-      newMarkers.push(marker)
-
-      let infowindow = new google.maps.InfoWindow({
-        content: `<strong>${item.name}</strong>`,
-        maxWidth: 300
-      })
-
-      marker.addListener('mouseover', () => infowindow.open(map, marker))
-      marker.addListener('mouseout', () => infowindow.close(map, marker))
-      marker.addListener('click', () => {
-        let markerID = marker.get('id')
-        document.getElementById(markerID).scrollIntoView({
-          behavior: 'auto',
-          block: 'center',
-          inline: 'center'
+      API.search(term, location, offset, sort_by).then(res => {
+        this.setState({ 
+          results: res.data.businesses,
+          search: true 
+        }, () => {
+          let newMarkers = maps.initMarkers(this.state.results)
+          this.setState({ markers: newMarkers })
         })
       })
     })
-
-    this.setState({  markers: newMarkers })
   }
 
   // next and previous page buttons
@@ -124,28 +72,26 @@ class Search extends React.Component {
     window.scrollTo(0, 0)
     if (event.target.textContent === 'Next Page') {
       // go to next page of results
-      this.setState({ 
-        page: this.state.page + 1,
-      }, () => {
+      this.setState({ page: this.state.page + 1 }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
-          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
-            .then(res => {
-              console.log(res.data.businesses)
-              this.setState({ results: res.data.businesses }, () => this.initMarkers())
+          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by).then(res => {
+            this.setState({ results: res.data.businesses }, () => {
+              let newMarkers = maps.initMarkers(this.state.results)
+              this.setState({ markers: newMarkers })
             })
+          })
         })
       })
     } else {
       // go to previous page of results
-      this.setState({ 
-        page: this.state.page - 1,
-      }, () => {
+      this.setState({ page: this.state.page - 1 }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
-          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by)
-            .then(res => {
-              console.log(res.data.businesses)
-              this.setState({ results: res.data.businesses }, () => this.initMarkers())
+          API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by).then(res => {
+            this.setState({ results: res.data.businesses }, () => {
+              let newMarkers = maps.initMarkers(this.state.results)
+              this.setState({ markers: newMarkers })
             })
+          })
         })
       })
     }
@@ -153,45 +99,45 @@ class Search extends React.Component {
 
   // get yelp reviews
   handleReviews = url => {
-    API.getReviews(url)
-      .then(res => {
-        this.setState({ reviews: res.data }, () => {
-          this.toggleReviews()
-        })
-      })
-      .catch(err => console.log(err))
+    API.getReviews(url).then(res => {
+      this.setState({ reviews: res.data }, () => this.toggleReviews())
+    })
+    .catch(err => console.log(err))
   }
 
+  // filter search 
   handleFilter = event => {
     let filter = event.target.getAttribute('data-filter')
     let val = event.target.getAttribute('data-val')
     this.setState({ [filter]: val }, () => {
-      
       // search based on new filters 
       if (filter === 'sort_by') {
         let { term, location, offset, sort_by } = this.state
-        API.search(term, location, offset, sort_by)
-          .then(res => {
-            console.log(res.data.businesses)
-            this.setState({ 
-              results: res.data.businesses,
-              search: true 
-            }, () => this.initMarkers())
+        API.search(term, location, offset, sort_by).then(res => {
+          this.setState({ 
+            results: res.data.businesses,
+            search: true 
+          }, () => {
+            let newMarkers = maps.initMarkers(this.state.results)
+            this.setState({ markers: newMarkers })
           })
+        })
       } else if (filter === 'price') {
         let { term, location, offset, sort_by, price } = this.state
-        API.filterPrice(term, location, offset, sort_by, price)
-          .then(res => {
-            console.log(res.data.businesses)
-            this.setState({ 
-              results: res.data.businesses,
-              search: true 
-            }, () => this.initMarkers())
+        API.filterPrice(term, location, offset, sort_by, price).then(res => {
+          this.setState({ 
+            results: res.data.businesses,
+            search: true 
+          }, () => {
+            let newMarkers = maps.initMarkers(this.state.results)
+            this.setState({ markers: newMarkers })
           })
+        })
       }
     })
   }
 
+  // highlight map markers on hover
   handleMouseOver = id => {
     const google = window.google
     this.state.markers.forEach(item => {
@@ -199,6 +145,7 @@ class Search extends React.Component {
     })
   }
 
+  // markers go back to original color when you hover off them
   handleMouseOut = id => {
     const google = window.google
     this.state.markers.forEach(item => {
@@ -206,6 +153,7 @@ class Search extends React.Component {
     })
   }
 
+  // get directions data
   handleDirections = (location, coordinates) => {
     sessionStorage['end'] = location 
     sessionStorage['latitude'] = coordinates.latitude
@@ -213,41 +161,7 @@ class Search extends React.Component {
     this.toggleDirections()
   }
 
-  initDirectionsMap = () => {
-    const google = window.google
-    let directionsDisplay = new google.maps.DirectionsRenderer
-    let directionsService = new google.maps.DirectionsService
-    let map = new google.maps.Map(document.getElementById('directions-map'), {
-      zoom: 10,
-      center: { lat: this.state.results[0].coordinates.latitude, lng: this.state.results[0].coordinates.longitude },
-      mapTypeControl: false,
-      streetViewControl: false
-    })
-    directionsDisplay.setMap(map)
-    directionsDisplay.setPanel(document.getElementById('right-panel'))
-
-    let control = document.getElementById('floating-panel')
-    control.style.display = 'block'
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control)
-
-    let onChangeHandler = function() {
-      let start = document.getElementById('start').value
-      let end = sessionStorage['end']
-      directionsService.route({
-        origin: start,
-        destination: end,
-        travelMode: 'DRIVING'
-      }, function(response, status) {
-        if (status === 'OK') {
-          directionsDisplay.setDirections(response)
-        } else {
-          window.alert('Directions request failed due to ' + status)
-        }
-      })
-    }
-    document.getElementById('submit').addEventListener('click', onChangeHandler)
-  }
-
+  // if user is logged in, show favorites modal, if not, prompt to log in
   handleFav = spot => {
     if (localStorage['token']) {
       this.setState({ fav: spot }, () => this.toggleFav())
@@ -255,6 +169,7 @@ class Search extends React.Component {
     else this.toggleLoginPrompt()
   }
 
+  // post location data for favorites list to back end
   pushFav = () => {
     let fav = this.state.fav
     let favToAdd = {
@@ -267,7 +182,11 @@ class Search extends React.Component {
       rating: fav.rating,
       reviewCount: fav.review_count
     }
-    API.addToList(favToAdd)
+    API.addToList(favToAdd).then(res => {
+      console.log(res.data)
+      this.toggleFav()
+    })
+    .catch(err => console.log(err))
   }
 
   render() {
@@ -287,13 +206,13 @@ class Search extends React.Component {
         <ReviewsModal
           isOpen={this.state.reviewsModal}
           toggle={this.toggleReviews}
-          body={this.state.reviews.length ? this.state.reviews.map(review => <p className="mb-5">{review}</p>) : ''}
+          body={this.state.reviews.length ? this.state.reviews.map((review, i) => <p key={i} className="mb-5">{review}</p>) : ''}
         />
 
         <DirectionsModal
           isOpen={this.state.directionsModal}
           toggle={this.toggleDirections}
-          initMap={this.initDirectionsMap}
+          initMap={() => maps.initDirectionsMap(this.state.results[0])}
         />
 
         <FavModal 
