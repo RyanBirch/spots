@@ -38,6 +38,7 @@ class Search extends React.Component {
   componentDidMount() {
     API.search('bar', 'orlando', 0, 'best_match').then(res => {
       this.setState({ results: res.data.businesses }, () => {
+        console.log(res.data.businesses)
         let newMarkers = maps.initMarkers(this.state.results)
         this.setState({ markers: newMarkers })
       })
@@ -178,7 +179,12 @@ class Search extends React.Component {
       category: fav.categories[0].title,
       price: fav.price,
       rating: fav.rating,
-      reviewCount: fav.review_count
+      reviewCount: fav.review_count,
+      url: fav.url,
+      coordinates: {
+        latitude: fav.coordinates.latitude,
+        longitude: fav.coordinates.longitude
+      }
     }
     API.addToList(favToAdd).then(res => {
       console.log(res.data)

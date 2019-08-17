@@ -10,6 +10,11 @@ const LocationSchema = new Schema({
   price: { type: String },
   rating: { type: String },
   reviewCount: { type: Number },
+  url: { type: String },
+  coordinates: { 
+    latitude: { type: Number },
+    longitude: { type: Number }
+  }
 })
 
 module.exports = LocationSchema
