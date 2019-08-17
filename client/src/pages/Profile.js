@@ -5,6 +5,7 @@ import FavResults from '../components/FavResults'
 import ReviewsModal from '../components/ReviewsModal'
 import DirectionsModal from '../components/DirectionsModal'
 import maps from '../utils/maps'
+import DeleteModal from '../components/DeleteModal'
 
 class Profile extends React.Component {
 
@@ -12,7 +13,8 @@ class Profile extends React.Component {
     favs: [],
     reviews: [],
     reviewsModal: false,
-    directionsModal: false
+    directionsModal: false,
+    deleteModal: false
   }
   
   componentDidMount() {
@@ -23,6 +25,10 @@ class Profile extends React.Component {
 
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
+  toggleDelete = id => {
+    sessionStorage['deleteID'] = id
+    this.setState({ deleteModal: !this.state.deleteModal })
+  }
 
   // get yelp reviews
   handleReviews = url => {
@@ -40,8 +46,18 @@ class Profile extends React.Component {
     this.toggleDirections()
   }
 
-  handleDelete = spotID => {
+  // handleDelete = spotID => {
+  //   API.deleteFav(spotID).then(() => {
+  //     API.getFavs().then(res => {
+  //       this.setState({ favs: res.data })
+  //     })
+  //   })
+  // }
+
+  handleDelete = () => {
+    let spotID = sessionStorage['deleteID']
     API.deleteFav(spotID).then(() => {
+      this.toggleDelete()
       API.getFavs().then(res => {
         this.setState({ favs: res.data })
       })
@@ -72,7 +88,8 @@ class Profile extends React.Component {
                     url={spot.url}
                     reviews={() => this.handleReviews(spot.url)}
                     handleDirections={() => this.handleDirections(spot.address, spot.coordinates)}
-                    handleDelete={() => this.handleDelete(spot._id)}
+                    // handleDelete={() => this.handleDelete(spot._id)}
+                    handleDelete={() => this.toggleDelete(spot._id)}
                   />
                 </div>
               )
@@ -90,6 +107,13 @@ class Profile extends React.Component {
           isOpen={this.state.directionsModal}
           toggle={this.toggleDirections}
           initMap={() => maps.initDirectionsMap(this.state.favs[0])}
+        />
+
+        <DeleteModal
+          isOpen={this.state.deleteModal}
+          toggle={this.toggleDelete}
+          // handleDelete={() => this.handleDelete(spot._id)}
+          handleDelete={this.handleDelete}
         />
 
       </div>

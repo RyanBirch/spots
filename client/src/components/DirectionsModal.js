@@ -13,8 +13,8 @@ class DirectionsModal extends React.Component {
 
               <div id="floating-panel">
                 <form>
-                  <strong>Start:</strong>
-                  <input type="text" id="start" />
+                  <strong style={{ fontSize: '1.5em' }}>Start:</strong>
+                  <input type="text" id="start" style={{ fontSize: '1.5em' }} />
                   <button type="button" id="submit" className="btn btn-success">Go</button>
                 </form>
               </div>
