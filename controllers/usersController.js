@@ -55,6 +55,26 @@ module.exports = {
     }, { new: true })
     .then(() => res.sendStatus(200))
     .catch(err => res.send(err))
+  },
+
+
+  // get a users' favorites
+  getFavs: function(req, res) {
+    User.findOne({ _id: req.user.id })
+      .then(user => res.send(user.list.locations))
+      .catch(err => res.send(err))
+  },
+
+
+  // delete from favorites list
+  deleteFav: function(req, res) {
+    let spotID = req.params.spotID
+    User.findOne({ _id: req.user.id }, (err, user) => {
+      user.list.locations.pull({ _id: spotID })
+      user.save()
+    })
+    .then(() => res.sendStatus(200))
+    .catch(err => res.send(err))
   }
 
 }

@@ -1,11 +1,11 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
 import API from '../utils/API'
 import FavResults from '../components/FavResults'
 import ReviewsModal from '../components/ReviewsModal'
 import DirectionsModal from '../components/DirectionsModal'
 import maps from '../utils/maps'
 import DeleteModal from '../components/DeleteModal'
+import Navbar from '../components/Navbar'
 
 class Profile extends React.Component {
 
@@ -17,12 +17,14 @@ class Profile extends React.Component {
     deleteModal: false
   }
   
+  // get favorites from database when page loads
   componentDidMount() {
     API.getFavs().then(res => {
       this.setState({ favs: res.data }, () => console.log(this.state.favs))
     })
   }
 
+  // open or close modals
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
   toggleDelete = id => {
@@ -46,14 +48,7 @@ class Profile extends React.Component {
     this.toggleDirections()
   }
 
-  // handleDelete = spotID => {
-  //   API.deleteFav(spotID).then(() => {
-  //     API.getFavs().then(res => {
-  //       this.setState({ favs: res.data })
-  //     })
-  //   })
-  // }
-
+  // delete a favorite
   handleDelete = () => {
     let spotID = sessionStorage['deleteID']
     API.deleteFav(spotID).then(() => {
@@ -88,7 +83,6 @@ class Profile extends React.Component {
                     url={spot.url}
                     reviews={() => this.handleReviews(spot.url)}
                     handleDirections={() => this.handleDirections(spot.address, spot.coordinates)}
-                    // handleDelete={() => this.handleDelete(spot._id)}
                     handleDelete={() => this.toggleDelete(spot._id)}
                   />
                 </div>
@@ -112,7 +106,6 @@ class Profile extends React.Component {
         <DeleteModal
           isOpen={this.state.deleteModal}
           toggle={this.toggleDelete}
-          // handleDelete={() => this.handleDelete(spot._id)}
           handleDelete={this.handleDelete}
         />
 

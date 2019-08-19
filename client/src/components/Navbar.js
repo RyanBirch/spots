@@ -5,12 +5,13 @@ class Navbar extends React.Component {
 
   state = {
     redirectToLogin: false,
+    redirectToHome: false
   }
 
   handleLog = event => {
     if (event.target.textContent === 'Log out') {
       localStorage.removeItem('token')
-      this.forceUpdate()
+      this.setState({ redirectToHome: true })
     } else {
       this.setState({ redirectToLogin: true })
     }
@@ -19,6 +20,7 @@ class Navbar extends React.Component {
   render() {
 
     if (this.state.redirectToLogin) return <Redirect to="/login" />
+    if (this.state.redirectToHome) return <Redirect to="/" />
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style={{ lineHeight: '2em' }}>

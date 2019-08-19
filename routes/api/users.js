@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const usersController = require('../../controllers/usersController')
 const isAuthenticated = require('../../middleware/isAuthenticated')
-const User = require('../../models/User')
 
 // /api/users
 
@@ -12,21 +11,9 @@ router.post('/register', usersController.registerNewUser)
 router.post('/list/add', isAuthenticated, usersController.addToFav)
 
 // get user's favorites
-router.get('/list/get', isAuthenticated, (req, res) => {
-  User.findOne({ _id: req.user.id })
-    .then(user => res.send(user.list.locations))
-    .catch(err => res.send(err))
-})
+router.get('/list/get', isAuthenticated, usersController.getFavs)
 
 // delete location from favorites list
-router.delete('/list/delete/:spotID', isAuthenticated, (req, res) => {
-  let spotID = req.params.spotID
-  User.findOne({ _id: req.user.id }, (err, user) => {
-    user.list.locations.pull({ _id: spotID })
-    user.save()
-  })
-  .then(() => res.sendStatus(200))
-  .catch(err => res.send(err))
-})
+router.delete('/list/delete/:spotID', isAuthenticated, usersController.deleteFav)
 
 module.exports = router

@@ -1,9 +1,9 @@
 import React from 'react'
 import SignupForm from '../components/SignupForm'
 import API from '../utils/API'
-import Navbar from '../components/Navbar'
 import { Link, Redirect } from 'react-router-dom'
 import Error from '../components/Error'
+import Navbar from '../components/Navbar'
 
 class Signup extends React.Component {
 

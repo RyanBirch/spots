@@ -8,28 +8,18 @@ import Profile from './pages/Profile'
 
 class App extends Component {
 
-  state = {
-    userData: {}
-  }
-
-  getUserData = () => {
-    if (localStorage['token']) {
-      // do something
-    }
-  }
-
   render() {
     return (
       <Router>
-        <Switch>
-          <div className="container" style={{ paddingTop: "6em", paddingBottom: "3em" }}>
+        <div className="container" style={{ paddingTop: "6em", paddingBottom: "3em" }}>
+          <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/profile" component={Profile} />
-          </div>
-        </Switch>
+          </Switch>
+        </div>
       </Router>
     )
   }

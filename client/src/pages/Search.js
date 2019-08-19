@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
 import API from '../utils/API'
 import SearchForm from '../components/SearchForm'
 import SearchResults from '../components/SearchResults'
@@ -8,6 +7,7 @@ import DirectionsModal from '../components/DirectionsModal'
 import FavModal from '../components/FavModal'
 import PromptLogin from '../components/PromptLogin'
 import maps from '../utils/maps'
+import Navbar from '../components/Navbar'
 
 class Search extends React.Component {
 
@@ -29,21 +29,30 @@ class Search extends React.Component {
     fav: ''
   }
 
+  // search using inputs from home page
+  componentDidMount() {
+    let what = sessionStorage['what']
+    let where = sessionStorage['where']
+    if (what && where) {
+      this.setState({ term: what, location: where }, () => {
+        API.search(what, where, 0, 'best_match').then(res => {
+          this.setState({ 
+            results: res.data.businesses,
+            search: true 
+          }, () => {
+            let newMarkers = maps.initMarkers(this.state.results)
+            this.setState({ markers: newMarkers })
+          })
+        })
+      })
+    }
+  }
+
   // open or close modals
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
   toggleFav = () => this.setState({ favModal: !this.state.favModal })
   toggleLoginPrompt = () => this.setState({ promptLogin: !this.state.promptLogin })
-
-  componentDidMount() {
-    API.search('bar', 'orlando', 0, 'best_match').then(res => {
-      this.setState({ results: res.data.businesses }, () => {
-        console.log(res.data.businesses)
-        let newMarkers = maps.initMarkers(this.state.results)
-        this.setState({ markers: newMarkers })
-      })
-    })
-  }
 
   // get form input
   handleInputChange = event => {
