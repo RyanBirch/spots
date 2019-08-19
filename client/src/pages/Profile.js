@@ -20,7 +20,7 @@ class Profile extends React.Component {
   // get favorites from database when page loads
   componentDidMount() {
     API.getFavs().then(res => {
-      this.setState({ favs: res.data }, () => console.log(this.state.favs))
+      this.setState({ favs: res.data })
     })
   }
 

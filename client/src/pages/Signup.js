@@ -22,7 +22,6 @@ class Signup extends React.Component {
     let { name, email, password } = this.state
     API.register(name, email, password)
       .then(res => {
-        console.log(res.data)
         localStorage['token'] = res.data.token
         this.setState({ redirect: true })
       })

@@ -21,7 +21,6 @@ class Login extends React.Component {
     let {  email, password } = this.state
     API.login(email, password)
       .then(res => {
-        console.log(res)
         localStorage['token'] = res.data.token
         this.setState({ redirect: true })
       })

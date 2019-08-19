@@ -36,13 +36,15 @@ class Search extends React.Component {
     if (what && where) {
       this.setState({ term: what, location: where }, () => {
         API.search(what, where, 0, 'best_match').then(res => {
-          this.setState({ 
-            results: res.data.businesses,
-            search: true 
-          }, () => {
-            let newMarkers = maps.initMarkers(this.state.results)
-            this.setState({ markers: newMarkers })
-          })
+          if (res.data.businesses[0]) {
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            }, () => {
+              let newMarkers = maps.initMarkers(this.state.results)
+              this.setState({ markers: newMarkers })
+            })
+          }
         })
       })
     }
@@ -66,13 +68,15 @@ class Search extends React.Component {
     this.setState({ page: 0 }, () => {
       let { term, location, offset, sort_by } = this.state
       API.search(term, location, offset, sort_by).then(res => {
-        this.setState({ 
-          results: res.data.businesses,
-          search: true 
-        }, () => {
-          let newMarkers = maps.initMarkers(this.state.results)
-          this.setState({ markers: newMarkers })
-        })
+        if (res.data.businesses[0]) {
+          this.setState({ 
+            results: res.data.businesses,
+            search: true 
+          }, () => {
+            let newMarkers = maps.initMarkers(this.state.results)
+            this.setState({ markers: newMarkers })
+          })
+        }
       })
     })
   }
@@ -85,10 +89,12 @@ class Search extends React.Component {
       this.setState({ page: this.state.page + 1 }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
           API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by).then(res => {
-            this.setState({ results: res.data.businesses }, () => {
-              let newMarkers = maps.initMarkers(this.state.results)
-              this.setState({ markers: newMarkers })
-            })
+            if (res.data.businesses[0]) {
+              this.setState({ results: res.data.businesses }, () => {
+                let newMarkers = maps.initMarkers(this.state.results)
+                this.setState({ markers: newMarkers })
+              })
+            }
           })
         })
       })
@@ -97,10 +103,12 @@ class Search extends React.Component {
       this.setState({ page: this.state.page - 1 }, () => {
         this.setState({ offset: this.state.page * 20 }, () => {
           API.search(this.state.term, this.state.location, this.state.offset, this.state.sort_by).then(res => {
-            this.setState({ results: res.data.businesses }, () => {
-              let newMarkers = maps.initMarkers(this.state.results)
-              this.setState({ markers: newMarkers })
-            })
+            if (res.data.businesses[0]) {
+              this.setState({ results: res.data.businesses }, () => {
+                let newMarkers = maps.initMarkers(this.state.results)
+                this.setState({ markers: newMarkers })
+              })
+            }
           })
         })
       })
@@ -124,24 +132,28 @@ class Search extends React.Component {
       if (filter === 'sort_by') {
         let { term, location, offset, sort_by } = this.state
         API.search(term, location, offset, sort_by).then(res => {
-          this.setState({ 
-            results: res.data.businesses,
-            search: true 
-          }, () => {
-            let newMarkers = maps.initMarkers(this.state.results)
-            this.setState({ markers: newMarkers })
-          })
+          if (res.data.businesses[0]) {
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            }, () => {
+              let newMarkers = maps.initMarkers(this.state.results)
+              this.setState({ markers: newMarkers })
+            })
+          }
         })
       } else if (filter === 'price') {
         let { term, location, offset, sort_by, price } = this.state
         API.filterPrice(term, location, offset, sort_by, price).then(res => {
-          this.setState({ 
-            results: res.data.businesses,
-            search: true 
-          }, () => {
-            let newMarkers = maps.initMarkers(this.state.results)
-            this.setState({ markers: newMarkers })
-          })
+          if (res.data.businesses[0]) {
+            this.setState({ 
+              results: res.data.businesses,
+              search: true 
+            }, () => {
+              let newMarkers = maps.initMarkers(this.state.results)
+              this.setState({ markers: newMarkers })
+            })
+          }
         })
       }
     })
@@ -196,7 +208,6 @@ class Search extends React.Component {
       }
     }
     API.addToList(favToAdd).then(res => {
-      console.log(res.data)
       this.toggleFav()
     })
     .catch(err => console.log(err))
