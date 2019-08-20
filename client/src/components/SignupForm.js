@@ -4,13 +4,13 @@ function SignupForm(props) {
   return (
     <div className="container">
 
-      <h1 className="text-center">Signup</h1>
+      <h1 className="text-center text-light">Signup</h1>
 
       <form onSubmit={props.handleSubmit}>
         
         {/* name */}
         <div className="form-group">
-          Name
+        <label className="text-light">Name</label>
           <input 
             type="text" 
             className="form-control" 
@@ -22,7 +22,7 @@ function SignupForm(props) {
 
         {/* email */}
         <div className="form-group">
-          Email address
+        <label className="text-light">Email address</label>
           <input 
             type="email" 
             className="form-control" 
@@ -34,7 +34,7 @@ function SignupForm(props) {
 
         {/* password */}
         <div className="form-group">
-          Password
+        <label className="text-light">Password</label>
           <input 
             type="password" 
             className="form-control" 

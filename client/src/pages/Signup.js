@@ -41,7 +41,7 @@ class Signup extends React.Component {
     if (this.state.redirect) return <Redirect to="/" />
 
     return (
-      <div>
+      <div className="container">
         <Navbar />
         <Error message={this.state.errorMessage} />
         <SignupForm 
@@ -52,7 +52,7 @@ class Signup extends React.Component {
           handleSubmit={this.handleSubmit} 
         />
 
-        <h3 className="text-center">If you already have an account, you can <Link to="/login">log in</Link></h3>
+        <h3 className="text-center text-light">If you already have an account, you can <Link to="/login">log in</Link></h3>
       </div>
     )
   }

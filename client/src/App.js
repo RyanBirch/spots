@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="container" style={{ paddingTop: "6em", paddingBottom: "3em" }}>
+        <div style={{ paddingTop: "6em", paddingBottom: "3em", backgroundColor: '#474747', minHeight: '100vh' }}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={Signup} />

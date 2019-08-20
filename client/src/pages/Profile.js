@@ -61,10 +61,10 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
 
         <Navbar />
-        <h1>My Spots</h1>
+        <h1 style={{ fontFamily: 'Lobster, cursive', color: '#fff' }}>My Spots</h1>
         { 
           this.state.favs.length ? (
             this.state.favs.map(spot => {

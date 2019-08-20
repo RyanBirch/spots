@@ -215,7 +215,7 @@ class Search extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
 
         <Navbar />
         <SearchForm 
@@ -290,8 +290,8 @@ class Search extends React.Component {
         </div>
 
         <div className="text-center">
-          {this.state.page > 0 ? <button className="btn btn-info m-4" onClick={this.changePage}>Prev Page</button> : ''}
-          {this.state.search ? <button className="btn btn-info m-4" onClick={this.changePage}>Next Page</button> : ''}
+          {this.state.page > 0 ? <button className="btn btn-primary m-4" onClick={this.changePage}>Prev Page</button> : ''}
+          {this.state.search ? <button className="btn btn-primary m-4" onClick={this.changePage}>Next Page</button> : ''}
         </div>
 
       </div>

@@ -7,30 +7,6 @@ mongoose.connect(MONGODB_URI, {
   useFindAndModify: false
 })
 
-// location
-const Schema = mongoose.Schema 
-
-const LocationSchema = new Schema({
-  name: { type: String, required: true },
-  image: { type: String },
-  address: { type: String },
-  phone: { type: String },
-  category: { type: String },
-  price: { type: String },
-  rating: { type: String },
-  reviewCount: { type: Number },
-  url: { type: String },
-  coordinates: { 
-    latitude: { type: Number },
-    longitude: { type: Number }
-  }
-})
-
-// list
-const ListSchema = new Schema({
-  locations: [LocationSchema]
-})
-
 // user
 const UserSchema = new Schema({
   name: {
@@ -51,48 +27,87 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  lists: [ListSchema]
+  lists: {
+    type: Object,
+    strict: false
+  }
 })
 
 const User = mongoose.model('user', UserSchema)
 
 
-// create user with favorites list
 User.create({
   name: 'user',
   email: 'userTest@hotmail.com',
   password: '123456',
-  lists: 
-  [
-    {
-      locations: [
-        {
-          name: 'The bar',
-          image: 'no image',
-          address: '123 Main St',
-          phone: '555-555-5555',
-          category: 'bars',
-          price: '$$',
-          rating: '4.5/5',
-          reviewCount: 500
-        }
-      ]
-    },
-    {
-      locations: [
-        {
-          name: 'The bar',
-          image: 'no image',
-          address: '123 Main St',
-          phone: '555-555-5555',
-          category: 'bars',
-          price: '$$',
-          rating: '4.5/5',
-          reviewCount: 500
-        }
-      ]
-    }
-  ]
+  lists: {
+    pizza: [
+      {
+        name: 'pizza 1',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      },
+      {
+        name: 'pizza 2',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      }
+    ],
+    bars: [
+      {
+        name: 'bar 1',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      },
+      {
+        name: 'bar 2',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      }
+    ],
+    burgers: [
+      {
+        name: 'burger 1',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      },
+      {
+        name: 'burger 2',
+        image: 'no image',
+        address: '123 Main St',
+        phone: '555-555-5555',
+        category: 'bars',
+        price: '$$',
+        rating: '4.5/5',
+        reviewCount: 500
+      }
+    ]
+  }
 })
 .then(user => console.log(user))
 .catch(err => console.log(err))

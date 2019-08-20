@@ -8,7 +8,7 @@ function SearchForm(props) {
 
         {/* search term */}
         <div className="form-group">
-          Find a spot
+          <label className="text-light">Find a spot</label>
           <input 
             type="text" 
             className="form-control" 
@@ -21,7 +21,7 @@ function SearchForm(props) {
 
         {/* location */}
         <div className="form-group">
-          Location
+        <label className="text-light">Location</label>
           <input 
             type="text" 
             className="form-control" 
@@ -36,7 +36,7 @@ function SearchForm(props) {
 
         {/* sort by */}
         <div className="dropdown" style={{ display: 'inline-block', marginRight: '1em', marginTop: '1em' }}>
-          <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button className="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -49,10 +49,10 @@ function SearchForm(props) {
 
         {/* price filter */}
         <div style={{ marginRight: '1em', marginTop: '1em', display: 'inline-block' }}>
-          <button type="button" className="btn btn-outline-secondary" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
-          <button type="button" className="btn btn-outline-secondary" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
+          <button type="button" className="btn btn-light border" data-val="1" data-filter="price" onClick={props.handleFilter}>$</button>
+          <button type="button" className="btn btn-light border" data-val="2" data-filter="price" onClick={props.handleFilter}>$$</button>
+          <button type="button" className="btn btn-light border" data-val="3" data-filter="price" onClick={props.handleFilter}>$$$</button>
+          <button type="button" className="btn btn-light border" data-val="4" data-filter="price" onClick={props.handleFilter}>$$$$</button>
 
         </div>  
 
