@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const ListSchema = require('./List')
+const LocationSchema = require('./Location')
 
 const UserSchema = new Schema({
   name: {
@@ -24,7 +25,8 @@ const UserSchema = new Schema({
   // list: ListSchema
   lists: [{
     name: String,
-    list: [ListSchema]
+    // list: [ListSchema]
+    list: [LocationSchema]
   }]
 })
 

@@ -19,7 +19,7 @@ router.delete('/list/delete/:spotID', isAuthenticated, usersController.deleteFav
 
 
 
-
+// create a new custom list
 router.post('/lists/create/:listName', isAuthenticated, (req, res) => {
   let id = req.user.id 
   let newList = {
@@ -34,13 +34,20 @@ router.post('/lists/create/:listName', isAuthenticated, (req, res) => {
       res.send(user)
     })
     .catch(err => res.send(err))
+})
 
+router.post('/lists/add/:listName', isAuthenticated, (req, res) => {
+  let id = req.user.id 
+  let listName = req.params.listName 
 
-
-  // User.findByIdAndUpdate(id, {
-  //   $addToSet: { lists: { [listName]: [] } } 
-  // })
-  // .then(user => res.json(user))
+  User.update({ 
+    _id: id,
+    'lists.name': [listName]
+  },{ 
+    $push: { 'lists.$.list': req.body } 
+  }) 
+  .then(user => res.send(user))
+  .catch(err => res.send(err))
 
 })
 
