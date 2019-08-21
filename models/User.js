@@ -21,7 +21,28 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  list: ListSchema
+  // list: ListSchema
+  lists: [{
+    name: String,
+    list: [ListSchema]
+  }]
 })
+
+// lists: [
+//   {
+//     name: 'bars',
+//     list: [
+//       {
+//         // data about location
+//       },
+//       {
+//         // second location
+//       }
+//     ]
+//   },
+//   {
+//     // second list
+//   }
+// ]
 
 module.exports = User = mongoose.model('user', UserSchema)
