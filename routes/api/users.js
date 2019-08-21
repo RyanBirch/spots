@@ -36,16 +36,33 @@ router.post('/lists/create/:listName', isAuthenticated, (req, res) => {
     .catch(err => res.send(err))
 })
 
+// add an item to a custom list
 router.post('/lists/add/:listName', isAuthenticated, (req, res) => {
   let id = req.user.id 
   let listName = req.params.listName 
 
-  User.update({ 
+  User.updateOne({ 
     _id: id,
     'lists.name': [listName]
   },{ 
     $push: { 'lists.$.list': req.body } 
   }) 
+  .then(user => res.send(user))
+  .catch(err => res.send(err))
+})
+
+// delete an item from a custom list
+router.delete('/lists/delete/:listName/:spotID', isAuthenticated, (req, res) => {
+  let userID = req.user.id 
+  let listName = req.params.listName
+  let spotID = req.params.spotID
+  
+  User.updateOne({
+    _id: userID,
+    'lists.name': [listName]
+  }, {
+    $pull: { 'lists.$.list': { _id: spotID } }
+  })
   .then(user => res.send(user))
   .catch(err => res.send(err))
 
