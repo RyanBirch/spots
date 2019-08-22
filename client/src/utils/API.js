@@ -73,5 +73,15 @@ export default {
       }
     }
     return axios.get(url, config)
+  },
+
+  addToCustomList: function(listName, spot) {
+    let url = `/api/users/lists/add/${listName}`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.post(url, spot, config)
   }
 }

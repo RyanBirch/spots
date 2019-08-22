@@ -190,7 +190,9 @@ class Search extends React.Component {
   }
 
   // post location data for favorites list to back end
-  pushFav = () => {
+  pushFav = selected => {
+    console.log(selected)
+    
     let fav = this.state.fav
     let favToAdd = {
       name: fav.name,
@@ -207,10 +209,21 @@ class Search extends React.Component {
         longitude: fav.coordinates.longitude
       }
     }
-    API.addToList(favToAdd).then(res => {
-      this.toggleFav()
-    })
-    .catch(err => console.log(err))
+
+    if (selected === 'favorites') {
+      // this will add to favorites
+      API.addToList(favToAdd).then(res => {
+        this.toggleFav()
+      })
+      .catch(err => console.log(err))
+    } else {
+      // this will add to a custom list
+      API.addToCustomList(selected, favToAdd).then(res => {
+        console.log(res)
+        this.toggleFav()
+      })
+      .catch(err => console.log(err))
+    }
   }
 
   render() {
