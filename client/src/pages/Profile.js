@@ -16,7 +16,8 @@ class Profile extends React.Component {
     reviewsModal: false,
     directionsModal: false,
     deleteModal: false,
-    createListModal: false
+    createListModal: false,
+    newList: ''
   }
   
   // get favorites from database when page loads
@@ -62,13 +63,27 @@ class Profile extends React.Component {
     })
   }
 
+  handleInputChange = event => {
+    let { name, value } = event.target
+    this.setState({ [name]: value })
+  }
+
+  createList = event => {
+    event.preventDefault()
+    let newList = this.state.newList
+    API.createCustomList(newList)
+      .then(res => console.log(res))
+      .catch(err => console.log(err.response.data.msg))
+  }
+
   render() {
     return (
       <div className="container">
 
         <Navbar />
-        <h1 style={{ fontFamily: 'Lobster, cursive', color: '#fff' }}>My Spots</h1>
-        <button className="btn btn-primary" onClick={this.toggleCreateList}>Create New List</button>
+        <h1 style={{ fontFamily: 'Lobster, cursive', color: '#fff', display: 'inline-block' }}>My Spots</h1>
+        <button className="btn btn-primary pull-right" onClick={this.toggleCreateList}>Create New List</button>
+        <h2 className="text-light mt-5">Favorites</h2>
         { 
           this.state.favs.length ? (
             this.state.favs.map(spot => {
@@ -110,6 +125,9 @@ class Profile extends React.Component {
         <CreateListModal
           isOpen={this.state.createListModal}
           toggle={this.toggleCreateList}
+          createList={this.createList}
+          handleInputChange={this.handleInputChange}
+          newList={this.state.newList}
         />
 
         <DeleteModal

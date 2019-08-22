@@ -56,12 +56,16 @@ export default {
   },
 
   createCustomList: function(listName) {
-    let url = `/api/users/lists/create/${listName}`
+    let url = `/api/users/lists/create`
     let config = {
       headers: {
         'x-auth-token': localStorage['token']
       }
     }
-    return axios.post(url, config)
+    return axios.post(url, { listName }, config)
+  },
+
+  getCustomLists: function() {
+    
   }
 }

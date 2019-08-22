@@ -20,18 +20,32 @@ router.delete('/list/delete/:spotID', isAuthenticated, usersController.deleteFav
 
 
 // create a new custom list
-router.post('/lists/create/:listName', isAuthenticated, (req, res) => {
+router.post('/lists/create', isAuthenticated, (req, res) => {
   let id = req.user.id 
   let newList = {
-    name: req.params.listName,
+    name: req.body.listName,
     list: []
   }
+
+  console.log('id: ' + id)
+  console.log('listname: ' + req.params.listName)
 
   User.findByIdAndUpdate(id)
     .then(user => {
       user.lists.push(newList)
       user.save()
       res.send(user)
+    })
+    .catch(err => res.send(err))
+})
+
+// get custom lists 
+router.get('/lists/get', isAuthenticated, (req, res) => {
+  let id = req.user.id 
+
+  User.findById(id) 
+    .then(user => {
+      res.send(user.lists)
     })
     .catch(err => res.send(err))
 })

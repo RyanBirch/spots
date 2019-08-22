@@ -2,6 +2,11 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 class FavModal extends React.Component {
+
+  getLists = () => {
+    
+  }
+
   render() {
     return (
       <div>

@@ -10,9 +10,9 @@ function CreateListModal(props) {
         <form>
           <div className="form-group">
             <label>Name: </label>
-            <input type="text" className="form-control" />
+            <input type="text" className="form-control" onChange={props.handleInputChange} name="newList" value={props.newList} />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Submit</button>
+          <button type="submit" className="btn btn-primary w-100" onClick={props.createList}>Submit</button>
         </form>
         </ModalBody>
         <ModalFooter>
