@@ -3,6 +3,8 @@
 ## Overview
 Full stack MERN application to keep track of your favorite spots. Search for bars, restaurants, and other businesses, and create collections of your favorites locations. Read reviews and get directions to different places. Create custom lists in your profile to always have your favorite spots on hand.
 
+<img src="client/public/images/Screen Shot 2019-08-22 at 5.07.12 AM.png">
+
 --- 
 
 ## Technologies Used
@@ -29,4 +31,4 @@ Full stack MERN application to keep track of your favorite spots. Search for bar
 ---
 
 ## Demo
-See the app here: <a href="#">Spots</a>
+See the app here: <a href="https://fierce-oasis-33706.herokuapp.com/">Spots</a>
