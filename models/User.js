@@ -23,8 +23,10 @@ const UserSchema = new Schema({
     default: Date.now
   },
 
+  // favorites list
   list: ListSchema,
   
+  // custom lists
   lists: [{
     name: String,
     list: [LocationSchema]
