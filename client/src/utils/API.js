@@ -53,5 +53,15 @@ export default {
       }
     }
     return axios.delete(url, config)
+  },
+
+  createCustomList: function(listName) {
+    let url = `/api/users/lists/create/${listName}`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.post(url, config)
   }
 }

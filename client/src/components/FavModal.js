@@ -16,7 +16,7 @@ class FavModal extends React.Component {
             </div>
           </ModalBody>
           <ModalFooter>
-          <Button color="primary" onClick={this.props.pushFav}>Confirm</Button>
+            <Button color="primary" onClick={this.props.pushFav}>Confirm</Button>
             <Button color="secondary" onClick={this.props.toggle}>Close</Button>
           </ModalFooter>
         </Modal>

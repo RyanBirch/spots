@@ -10,7 +10,7 @@ function DeleteModal(props) {
           <h4>Are you sure you want to delete this?</h4>
         </ModalBody>
         <ModalFooter>
-        `<Button color="danger" onClick={props.handleDelete}>Yes, get rid of it</Button>
+          <Button color="danger" onClick={props.handleDelete}>Yes, get rid of it</Button>
           <Button color="secondary" onClick={props.toggle}>No, just kidding</Button>
         </ModalFooter>
       </Modal>

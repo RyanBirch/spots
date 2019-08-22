@@ -6,6 +6,7 @@ import DirectionsModal from '../components/DirectionsModal'
 import maps from '../utils/maps'
 import DeleteModal from '../components/DeleteModal'
 import Navbar from '../components/Navbar'
+import CreateListModal from '../components/CreateListModal'
 
 class Profile extends React.Component {
 
@@ -14,7 +15,8 @@ class Profile extends React.Component {
     reviews: [],
     reviewsModal: false,
     directionsModal: false,
-    deleteModal: false
+    deleteModal: false,
+    createListModal: false
   }
   
   // get favorites from database when page loads
@@ -27,6 +29,7 @@ class Profile extends React.Component {
   // open or close modals
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
+  toggleCreateList = () => this.setState({ createListModal: !this.state.createListModal })
   toggleDelete = id => {
     sessionStorage['deleteID'] = id
     this.setState({ deleteModal: !this.state.deleteModal })
@@ -65,6 +68,7 @@ class Profile extends React.Component {
 
         <Navbar />
         <h1 style={{ fontFamily: 'Lobster, cursive', color: '#fff' }}>My Spots</h1>
+        <button className="btn btn-primary" onClick={this.toggleCreateList}>Create New List</button>
         { 
           this.state.favs.length ? (
             this.state.favs.map(spot => {
@@ -101,6 +105,11 @@ class Profile extends React.Component {
           isOpen={this.state.directionsModal}
           toggle={this.toggleDirections}
           initMap={() => maps.initDirectionsMap(this.state.favs[0])}
+        />
+
+        <CreateListModal
+          isOpen={this.state.createListModal}
+          toggle={this.toggleCreateList}
         />
 
         <DeleteModal
