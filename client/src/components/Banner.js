@@ -39,7 +39,7 @@ class Banner extends React.Component {
             </div>
             <div className="col-lg-6 mt-1 mb-3 text-light text-center">
               Near
-              <input id="where" type="text" className="form-control ml-2 mr-2" placeholder="" style={{ width: '60%', display: 'inline-block' }} onChange={this.handleChange} name="where" value={this.state.where} />
+              <input id="where" type="text" className="form-control ml-2 mr-2" placeholder="Location" style={{ width: '60%', display: 'inline-block' }} onChange={this.handleChange} name="where" value={this.state.where} />
               <button type="submit" className="btn btn-primary">Go!</button>
             </div>
           </div>

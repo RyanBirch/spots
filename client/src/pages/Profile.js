@@ -130,14 +130,29 @@ class Profile extends React.Component {
           this.state.lists.length ? (
             this.state.lists.map(listItem => {
               return (
-                <div key={listItem._id} className="text-light mt-5">
-                  <h2>{listItem.name}</h2>
+                <div key={listItem._id} className="mt-5">
+                  <h2 className="text-light">{listItem.name}</h2>
                   {
                     listItem.list.length ? (
                       listItem.list.map(item => {
+                        console.log(item)
                         return (
-                          <div>
-                            {item.name}
+                          <div key={item._id}>
+                            <FavResults 
+                              id={item._id}
+                              image={item.image}
+                              name={item.name}
+                              location={item.address}
+                              phone={item.phone}
+                              cat={item.category}
+                              price={item.price}
+                              rating={item.rating}
+                              review_count={item.reviewCount}
+                              url={item.url}
+                              reviews={() => this.handleReviews(item.url)}
+                              handleDirections={() => this.handleDirections(item.address, item.coordinates)}
+                              handleDelete={() => this.toggleDelete(item._id)}
+                            />
                           </div>
                         )
                       })
