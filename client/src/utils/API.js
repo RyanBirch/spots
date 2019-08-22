@@ -83,5 +83,15 @@ export default {
       }
     }
     return axios.post(url, spot, config)
+  },
+
+  deleteFromCustomList: function(listName, spotID) {
+    let url = `/api/users/lists/delete/${listName}/${spotID}`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.delete(url, config)
   }
 }

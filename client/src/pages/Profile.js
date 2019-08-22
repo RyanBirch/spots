@@ -37,7 +37,15 @@ class Profile extends React.Component {
   toggleReviews = () => this.setState({ reviewsModal: !this.state.reviewsModal })
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
   toggleCreateList = () => this.setState({ createListModal: !this.state.createListModal })
-  toggleDelete = id => {
+
+  toggleDelete = (id, listType, listItemName, itemID) => {
+    if (listType === 'custom') {
+      sessionStorage['listType'] = 'custom'
+      sessionStorage['listItemName'] = listItemName
+      sessionStorage['itemID'] = itemID
+    } else {
+      sessionStorage['listType'] = 'fav'
+    }
     sessionStorage['deleteID'] = id
     this.setState({ deleteModal: !this.state.deleteModal })
   }
@@ -61,12 +69,27 @@ class Profile extends React.Component {
   // delete a favorite
   handleDelete = () => {
     let spotID = sessionStorage['deleteID']
-    API.deleteFav(spotID).then(() => {
-      this.toggleDelete()
-      API.getFavs().then(res => {
-        this.setState({ favs: res.data })
+    if (sessionStorage['listType'] === 'fav') {
+      // delete from favorites list
+      API.deleteFav(spotID).then(() => {
+        this.toggleDelete()
+        API.getFavs().then(res => {
+          this.setState({ favs: res.data })
+        })
       })
-    })
+    } else {
+      // delete from custom list
+      let listItemName = sessionStorage['listItemName']
+      let itemID = sessionStorage['itemID']
+      API.deleteFromCustomList(listItemName, itemID).then(res => {
+        this.toggleDelete()
+        console.log(res)
+        API.getCustomLists().then(res => {
+          console.log(res.data)
+          this.setState({ lists: res.data })
+        })
+      })
+    }
   }
 
   handleInputChange = event => {
@@ -117,7 +140,7 @@ class Profile extends React.Component {
                     url={spot.url}
                     reviews={() => this.handleReviews(spot.url)}
                     handleDirections={() => this.handleDirections(spot.address, spot.coordinates)}
-                    handleDelete={() => this.toggleDelete(spot._id)}
+                    handleDelete={() => this.toggleDelete(spot._id, 'fav')}
                   />
                 </div>
               )
@@ -135,7 +158,6 @@ class Profile extends React.Component {
                   {
                     listItem.list.length ? (
                       listItem.list.map(item => {
-                        console.log(item)
                         return (
                           <div key={item._id}>
                             <FavResults 
@@ -151,7 +173,7 @@ class Profile extends React.Component {
                               url={item.url}
                               reviews={() => this.handleReviews(item.url)}
                               handleDirections={() => this.handleDirections(item.address, item.coordinates)}
-                              handleDelete={() => this.toggleDelete(item._id)}
+                              handleDelete={() => this.toggleDelete(item._id, 'custom', listItem.name, item._id)}
                             />
                           </div>
                         )

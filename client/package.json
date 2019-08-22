@@ -1,7 +1,7 @@
 {
-  "name": "mern",
+  "name": "spots",
   "version": "0.1.0",
-  "description": "Mern Demo",
+  "description": "",
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {

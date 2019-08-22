@@ -1,10 +1,10 @@
 // initialize express
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 
 // data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // Serve up static assets
 if (process.env.NODE_ENV === 'production') app.use(express.static('client/build'))
