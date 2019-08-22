@@ -66,6 +66,12 @@ export default {
   },
 
   getCustomLists: function() {
-    
+    let url = `/api/users/lists/get`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.get(url, config)
   }
 }

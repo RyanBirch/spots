@@ -17,13 +17,19 @@ class Profile extends React.Component {
     directionsModal: false,
     deleteModal: false,
     createListModal: false,
-    newList: ''
+    newList: '',
+    lists: []
   }
   
   // get favorites from database when page loads
   componentDidMount() {
     API.getFavs().then(res => {
-      this.setState({ favs: res.data })
+      this.setState({ favs: res.data }, () => {
+        API.getCustomLists().then(res => {
+          console.log(res.data)
+          this.setState({ lists: res.data })
+        })
+      })
     })
   }
 
@@ -72,7 +78,14 @@ class Profile extends React.Component {
     event.preventDefault()
     let newList = this.state.newList
     API.createCustomList(newList)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        this.toggleCreateList()
+        API.getCustomLists().then(res => {
+          console.log(res.data)
+          this.setState({ lists: res.data })
+        })
+      })
       .catch(err => console.log(err.response.data.msg))
   }
 
@@ -83,6 +96,8 @@ class Profile extends React.Component {
         <Navbar />
         <h1 style={{ fontFamily: 'Lobster, cursive', color: '#fff', display: 'inline-block' }}>My Spots</h1>
         <button className="btn btn-primary pull-right" onClick={this.toggleCreateList}>Create New List</button>
+
+        {/* render favorite list */}
         <h2 className="text-light mt-5">Favorites</h2>
         { 
           this.state.favs.length ? (
@@ -104,6 +119,30 @@ class Profile extends React.Component {
                     handleDirections={() => this.handleDirections(spot.address, spot.coordinates)}
                     handleDelete={() => this.toggleDelete(spot._id)}
                   />
+                </div>
+              )
+            })
+          ) : ''
+        }
+
+        {/* render custom lists */}
+        {
+          this.state.lists.length ? (
+            this.state.lists.map(listItem => {
+              return (
+                <div key={listItem._id} className="text-light mt-5">
+                  <h2>{listItem.name}</h2>
+                  {
+                    listItem.list.length ? (
+                      listItem.list.map(item => {
+                        return (
+                          <div>
+                            {item.name}
+                          </div>
+                        )
+                      })
+                    ) : ''
+                  }
                 </div>
               )
             })
