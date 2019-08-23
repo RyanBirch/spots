@@ -93,5 +93,15 @@ export default {
       }
     }
     return axios.delete(url, config)
+  },
+
+  deleteList: function(listID) {
+    let url = `/api/users/lists/deleteList/${listID}`
+    let config = {
+      headers: {
+        'x-auth-token': localStorage['token']
+      }
+    }
+    return axios.delete(url, config)
   }
 }

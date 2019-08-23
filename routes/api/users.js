@@ -27,12 +27,23 @@ router.post('/lists/create', isAuthenticated, (req, res) => {
     list: []
   }
 
-  console.log('id: ' + id)
-  console.log('listname: ' + req.params.listName)
-
   User.findByIdAndUpdate(id)
     .then(user => {
       user.lists.push(newList)
+      user.save()
+      res.send(user)
+    })
+    .catch(err => res.send(err))
+})
+
+// delete a list
+router.delete('/lists/deleteList/:listID', isAuthenticated, (req, res) => {
+  let userID = req.user.id 
+  let listID = req.params.listID 
+
+  User.findByIdAndUpdate(userID) 
+    .then(user => {
+      user.lists.pull(listID)
       user.save()
       res.send(user)
     })

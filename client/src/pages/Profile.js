@@ -7,6 +7,7 @@ import maps from '../utils/maps'
 import DeleteModal from '../components/DeleteModal'
 import Navbar from '../components/Navbar'
 import CreateListModal from '../components/CreateListModal'
+import DeleteListModal from '../components/DeleteListModal'
 
 class Profile extends React.Component {
 
@@ -17,6 +18,7 @@ class Profile extends React.Component {
     directionsModal: false,
     deleteModal: false,
     createListModal: false,
+    deleteListModal: false,
     newList: '',
     lists: []
   }
@@ -48,6 +50,11 @@ class Profile extends React.Component {
     }
     sessionStorage['deleteID'] = id
     this.setState({ deleteModal: !this.state.deleteModal })
+  }
+
+  toggleDeleteList = id => {
+    sessionStorage['listID'] = id
+    this.setState({ deleteListModal: !this.state.deleteListModal })
   }
 
   // get yelp reviews
@@ -90,6 +97,17 @@ class Profile extends React.Component {
         })
       })
     }
+  }
+
+  handleDeleteList = () => {
+    // we will delete sessionStorage['listID']
+    let listID = sessionStorage['listID']
+    API.deleteList(listID).then(res => {
+      this.toggleDeleteList()
+      API.getCustomLists().then(res => {
+        this.setState({ lists: res.data })
+      })
+    })
   }
 
   handleInputChange = event => {
@@ -154,7 +172,8 @@ class Profile extends React.Component {
             this.state.lists.map(listItem => {
               return (
                 <div key={listItem._id} className="mt-5">
-                  <h2 className="text-light">{listItem.name}</h2>
+                  <h2 className="text-light d-inline-block">{listItem.name}</h2>
+                  <button className="btn btn-danger m-3" onClick={() => this.toggleDeleteList(listItem._id)}>Delete List</button>
                   {
                     listItem.list.length ? (
                       listItem.list.map(item => {
@@ -210,6 +229,12 @@ class Profile extends React.Component {
           isOpen={this.state.deleteModal}
           toggle={this.toggleDelete}
           handleDelete={this.handleDelete}
+        />
+
+        <DeleteListModal
+          isOpen={this.state.deleteListModal}
+          toggle={this.toggleDeleteList}
+          handleDelete={this.handleDeleteList}
         />
 
       </div>
