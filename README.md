@@ -1,7 +1,7 @@
 # Spots
 
 ## Overview
-Full stack MERN application to keep track of your favorite spots. Search for bars, restaurants, and other businesses, and create collections of your favorites locations. Read reviews and get directions to different places. Create custom lists in your profile to always have your favorite spots on hand.
+Full stack MERN application that allows users to create collections of their favorite bars, restaurants and other businesses. Utilizes Yelp API and Google Maps API for searches, and JSON web tokens for authentication. Read reviews, get directions, and create custom lists to keep track of your favorite spots. 
 
 <img src="client/public/images/Screen Shot 2019-08-22 at 5.07.12 AM.png">
 
@@ -14,7 +14,6 @@ Full stack MERN application to keep track of your favorite spots. Search for bar
 * Express
 * MongoDB
 * Mongoose
-* jsonwebtoken
 
 ---
 
@@ -24,8 +23,8 @@ Full stack MERN application to keep track of your favorite spots. Search for bar
 3. In a terminal window, run 'mongod' to start the mongo daemon
 4. In a seperate terminal window, cd into the project folder
 5. Run 'npm install' to install dependencies
-6. Create a .env file at the top level of the application and set JWT_SECRET to your own jwt secret and set YELP_KEY to your own Yelp api key
-7. In client/public/index.html, replace the Google Maps api key in the script tag with your own key
+6. Create a .env file at the root level of the application and set JWT_SECRET to your own jwt secret and set YELP_KEY to your own Yelp api key
+7. In client/public/index.html, replace the Google Maps API key in the script tag with your own key
 8. run 'npm start' to start the development server
 
 ---
