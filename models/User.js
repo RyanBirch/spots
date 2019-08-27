@@ -29,6 +29,8 @@ const UserSchema = new Schema({
   // custom lists
   lists: [{
     name: String,
+    city: String,
+    public: Boolean,
     list: [LocationSchema]
   }]
 })

@@ -75,6 +75,84 @@ module.exports = {
     })
     .then(() => res.sendStatus(200))
     .catch(err => res.send(err))
+  },
+
+
+  // create a custom list
+  createList: function(req, res) {
+    let id = req.user.id 
+    let newList = {
+      name: req.body.listName,
+      list: []
+    }
+
+    User.findByIdAndUpdate(id)
+      .then(user => {
+        user.lists.push(newList)
+        user.save()
+        res.send(user)
+      })
+      .catch(err => res.send(err))
+  },
+
+
+  // delete a custom list
+  deleteList: function(req, res) {
+    let userID = req.user.id 
+    let listID = req.params.listID 
+
+    User.findByIdAndUpdate(userID) 
+      .then(user => {
+        user.lists.pull(listID)
+        user.save()
+        res.send(user)
+      })
+      .catch(err => res.send(err))
+  },
+
+
+  // get custom lists
+  getLists: function (req, res) {
+    let id = req.user.id
+
+    User.findById(id)
+      .then(user => {
+        res.send(user.lists)
+      })
+      .catch(err => res.send(err))
+  },
+
+
+  // add an item to a custom list
+  addToCustomList: function(req, res) {
+    let id = req.user.id 
+    let listName = req.params.listName 
+
+    User.updateOne({ 
+      _id: id,
+      'lists.name': [listName]
+    },{ 
+      $push: { 'lists.$.list': req.body } 
+    }) 
+    .then(user => res.send(user))
+    .catch(err => res.send(err))
+  },
+  
+
+  // delete an item from a custom list
+  deleteFromCustomList: function(req, res) {
+    let userID = req.user.id 
+    let listName = req.params.listName
+    let spotID = req.params.spotID
+    
+    User.updateOne({
+      _id: userID,
+      'lists.name': [listName]
+    }, {
+      $pull: { 'lists.$.list': { _id: spotID } }
+    })
+    .then(user => res.send(user))
+    .catch(err => res.send(err))
   }
 
 }

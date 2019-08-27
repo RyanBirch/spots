@@ -39,15 +39,15 @@ class Navbar extends React.Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav ml-auto pull-right">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <Link to="/search"><button className="btn btn-light" style={{ marginRight: '1em', backgroundColor: '#F7A216', border: 'none' }}><span role="img" aria-label="search">&#x1F50D;</span> Search</button></Link>
+              <Link to="/search"><button className="btn" style={{ marginRight: '1em', color: '#F7A216', border: 'none' }}> Search</button></Link>
             </li>
             <li className="nav-item active">
-              {localStorage['token'] ? <Link to="/profile"><button className="btn btn-light" style={{ marginRight: '1em', backgroundColor: '#F7A216', border: 'none' }}>My Spots</button></Link> : ''}
+              {localStorage['token'] ? <Link to="/profile"><button className="btn" style={{ marginRight: '1em', color: '#F7A216', border: 'none' }}>My Spots</button></Link> : ''}
             </li>
             <li className="nav-item active">
-              <button className="btn btn-light" style={{ marginRight: '1em', backgroundColor: '#F7A216', border: 'none' }} onClick={this.handleLog}>{localStorage['token'] ? "Log out" : "Log in"}</button>
+              <button className="btn" style={{ marginRight: '1em', color: '#F7A216', border: 'none' }} onClick={this.handleLog}>{localStorage['token'] ? "Log out" : "Log in"}</button>
             </li>
           </ul>
         </div>

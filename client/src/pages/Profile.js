@@ -40,6 +40,7 @@ class Profile extends React.Component {
   toggleDirections = () => this.setState({ directionsModal: !this.state.directionsModal })
   toggleCreateList = () => this.setState({ createListModal: !this.state.createListModal })
 
+  // opens modal to delete favorites and passes information to session storage
   toggleDelete = (id, listType, listItemName, itemID) => {
     if (listType === 'custom') {
       sessionStorage['listType'] = 'custom'
@@ -52,6 +53,7 @@ class Profile extends React.Component {
     this.setState({ deleteModal: !this.state.deleteModal })
   }
 
+  // opens modal to delete lists and passes information to session storage
   toggleDeleteList = id => {
     sessionStorage['listID'] = id
     this.setState({ deleteListModal: !this.state.deleteListModal })
@@ -99,8 +101,8 @@ class Profile extends React.Component {
     }
   }
 
+  // delete a custom list
   handleDeleteList = () => {
-    // we will delete sessionStorage['listID']
     let listID = sessionStorage['listID']
     API.deleteList(listID).then(res => {
       this.toggleDeleteList()
@@ -115,6 +117,7 @@ class Profile extends React.Component {
     this.setState({ [name]: value })
   }
 
+  // create a custom list
   createList = event => {
     event.preventDefault()
     let newList = this.state.newList
